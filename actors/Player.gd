@@ -4,7 +4,7 @@ class_name Player
 signal player_health_changed(new_health)
 signal died
 
-export (int) var speed = 100
+export (int) var speed = 150
 
 onready var collision_shape = $CollisionShape2D
 onready var blink_target = $BlinkTarget

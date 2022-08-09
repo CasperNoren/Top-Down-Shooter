@@ -2,6 +2,7 @@ extends Area2D
 class_name CapturableBase
 
 signal base_captured(new_team)
+signal bases_changed(bases)
 
 export (Color) var neutral_color = Color(1, 1, 1)
 export (Color) var player_color = Color(0.235294, 0.431373, 0.129412)
@@ -11,10 +12,16 @@ onready var collision_shape = $CollisionShape2D
 onready var team = $Team
 onready var capture_timer = $CaptureTimer
 onready var sprite = $Sprite
+onready var player_label = $PlayerLabel
+onready var enemy_label = $EnemyLabel
 
-var player_unit_count = 0
-var enemy_unit_count = 0
+var player_unit_count: int = 0
+var enemy_unit_count: int = 0
 var team_to_capture: int = Team.TeamName.NEUTRAL
+
+func _ready():
+	player_label.text = "0"
+	enemy_label.text = "0"
 
 func get_random_position_within_capture_radius() -> Vector2:
 	var extents = collision_shape.shape.extents
@@ -30,8 +37,10 @@ func _on_CapturableBase_body_entered(body):
 		var body_team = body.get_team()
 		if body_team == Team.TeamName.PLAYER:
 			player_unit_count += 1
+			change_player_label()
 		elif body_team == Team.TeamName.ENEMY:
 			enemy_unit_count += 1
+			change_enemy_label()
 		check_wheter_base_can_be_captured()
 
 
@@ -40,9 +49,17 @@ func _on_CapturableBase_body_exited(body):
 		var body_team = body.get_team()
 		if body_team == Team.TeamName.PLAYER:
 			player_unit_count -= 1
+			change_player_label()
 		if body_team == Team.TeamName.ENEMY:
 			enemy_unit_count -= 1
+			change_enemy_label()
 		check_wheter_base_can_be_captured()
+
+func change_player_label():
+	player_label.text = str(player_unit_count)
+
+func change_enemy_label():
+	enemy_label.text = str(enemy_unit_count)
 
 func check_wheter_base_can_be_captured():
 	#print(player_unit_count, " | ", enemy_unit_count)
@@ -71,6 +88,7 @@ func get_team_with_majority() -> int:
 func set_team(new_team):
 	team.team = new_team
 	emit_signal("base_captured", new_team)
+	emit_signal("bases_changed", get_children())
 	match new_team:
 		Team.TeamName.NEUTRAL:
 			sprite.modulate = neutral_color

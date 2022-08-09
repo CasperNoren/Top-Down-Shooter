@@ -34,6 +34,9 @@ func set_new_health_value(new_health: int):
 	health_tween.interpolate_property(bar_style, "bg_color", highlight_color, original_color, transition_time / 2, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	health_tween.start()
 
+func set_bases(bases: Array):
+	pass
+
 func set_current_ammo(new_ammo: int):
 	current_ammo.text = str(new_ammo)
 

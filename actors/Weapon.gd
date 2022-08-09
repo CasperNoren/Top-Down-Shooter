@@ -25,7 +25,7 @@ func initialize(team: int):
 	self.team = team
 
 func shoot():
-	if current_ammo != 0 and attack_cooldown.is_stopped() and Bullet != null:
+	if current_ammo != 0 and attack_cooldown.is_stopped() and not animation_player.get_current_animation() == "reload" and Bullet != null:
 		var bullet_instance = Bullet.instance()
 		var direction = (end_of_gun.global_position - global_position).normalized()
 		GlobalSignals.emit_signal("bullet_fired", bullet_instance, team, end_of_gun.global_position, direction)
@@ -35,6 +35,7 @@ func shoot():
 		
 
 func start_reload():
+	muzzle_flash.hide()
 	animation_player.play("reload")
 	
 func _stop_reload():

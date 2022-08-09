@@ -29,6 +29,7 @@ func _ready() -> void:
 	enemy_ai.initialize(bases, enemy_respawns.get_children(), pathfinding)
 	capturable_base_manager.connect("player_captured_all_bases", self, "handle_player_win")
 	capturable_base_manager.connect("player_lost_all_bases", self, "handle_player_lost")
+	capturable_base_manager.connect("bases_changed", self, "handle_bases_changed")
 	
 	spawn_player()
 
@@ -53,6 +54,9 @@ func handle_player_lost():
 	# GameOverScreen has pause mode set to process instead of inherit so it won't be paused
 	game_over.set_title(false)
 	get_tree().paused = true
+
+func handle_bases_changed(bases: Array):
+	gui.set_bases(bases)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause"):

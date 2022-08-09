@@ -2,6 +2,10 @@ extends CanvasLayer
 
 
 onready var title = $PanelContainer/MarginContainer/Rows/Title
+onready var animation_player = $AnimationPlayer
+
+func _ready():
+	animation_player.play("Fade")
 
 func set_title(win: bool):
 	if win:
