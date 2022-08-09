@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://weapons/BlinkParticles.gd" type="Script" id=1]
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0.00621118, 0.645963, 0.968944 )
+colors = PoolColorArray( 0.054903, 0.272846, 0.937012, 1, 0.81934, 0.891518, 0.944824, 1, 0.929412, 0.94902, 0.960784, 0.619608 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.309783, 0.371591 ), 0.0, 0.0, 0, 0, Vector2( 0.505435, 0.7 ), 0.0, 0.0, 0, 0, Vector2( 0.641304, 0.281818 ), 0.0, 0.0, 0, 0, Vector2( 0.793478, 0.9 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+emission_shape = 2
+emission_box_extents = Vector3( 100, 10, 1 )
+flag_disable_z = true
+direction = Vector3( -1, -1, 0 )
+gravity = Vector3( 0, 60, 0 )
+initial_velocity = 10.0
+initial_velocity_random = 0.2
+angular_velocity = 100.0
+angular_velocity_random = 0.2
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 10.0
+radial_accel = 7.84
+tangential_accel = 30.0
+angle = 15.0
+angle_random = 0.2
+scale = 4.0
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
+hue_variation = 0.02
+hue_variation_random = 0.2
+
+[node name="BlinkParticles" type="Particles2D"]
+position = Vector2( -106, -1 )
+scale = Vector2( 1, 0.2 )
+emitting = false
+amount = 50
+lifetime = 0.7
+one_shot = true
+preprocess = 0.1
+speed_scale = 2.0
+explosiveness = 0.2
+local_coords = false
+process_material = SubResource( 6 )
+script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

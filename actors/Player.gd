@@ -8,7 +8,6 @@ export (int) var speed = 150
 
 onready var collision_shape = $CollisionShape2D
 onready var blink_target = $BlinkTarget
-onready var blink_particles = $BlinkParticles
 onready var weapon_manager = $WeaponManager
 onready var health_stat = $Health
 onready var team = $Team
@@ -47,7 +46,7 @@ func get_team() -> int:
 	return team.team
 
 func blink():
-	blink_particles.restart()
+	GlobalSignals.emit_signal("blink_used", global_position, global_rotation)
 	global_position = blink_target.global_position
 
 func handle_hit():
