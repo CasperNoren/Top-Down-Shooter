@@ -44,6 +44,16 @@ margin_bottom = 82.0
 mouse_filter = 2
 size_flags_vertical = 3
 
+[node name="BaseLabel" type="RichTextLabel" parent="MarginContainer/Rows/TopRow"]
+margin_right = 924.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "  [color=white]o[/color] [color=white]o[/color] [color=white]o[/color]"
+text = "  o o o"
+
 [node name="MiddleRow" type="HBoxContainer" parent="MarginContainer/Rows"]
 margin_top = 86.0
 margin_right = 924.0

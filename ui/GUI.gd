@@ -6,6 +6,7 @@ onready var health_bar = $MarginContainer/Rows/BottomRow/HealthSection/HealthBar
 onready var health_tween = $MarginContainer/Rows/BottomRow/HealthSection/HealthTween
 onready var current_ammo = $MarginContainer/Rows/BottomRow/AmmoSection/CurrentAmmo
 onready var max_ammo = $MarginContainer/Rows/BottomRow/AmmoSection/MaxAmmo
+onready var base_label = $MarginContainer/Rows/TopRow/BaseLabel
 
 var player: Player
 
@@ -34,8 +35,19 @@ func set_new_health_value(new_health: int):
 	health_tween.interpolate_property(bar_style, "bg_color", highlight_color, original_color, transition_time / 2, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	health_tween.start()
 
+# Dynamically shows bases' team status, can have as many bases as fits on screen
 func set_bases(bases: Array):
-	pass
+	var new_text: String = ""
+	for base in bases:
+		match base.team.team:
+			Team.TeamName.PLAYER:
+				new_text += "[color=green]"
+			Team.TeamName.ENEMY:
+				new_text += "[color=blue]"
+			Team.TeamName.NEUTRAL:
+				new_text += "[color=white]"
+		new_text += "o [/color]"
+		base_label.bbcode_text = new_text
 
 func set_current_ammo(new_ammo: int):
 	current_ammo.text = str(new_ammo)

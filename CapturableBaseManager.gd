@@ -2,6 +2,7 @@ extends Node2D
 
 signal player_captured_all_bases
 signal player_lost_all_bases
+signal bases_changed(bases)
 
 var capturable_bases: Array = []
 
@@ -14,6 +15,7 @@ func get_capturable_bases() -> Array:
 	return capturable_bases
 
 func handle_base_captured(_team):
+	emit_signal("bases_changed", capturable_bases)
 	var player_bases = 0
 	var enemy_bases = 0
 	var total_bases = capturable_bases.size()
