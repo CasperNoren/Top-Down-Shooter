@@ -3,7 +3,7 @@
 [ext_resource path="res://actors/AI.gd" type="Script" id=1]
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 166.003
+radius = 270.046
 
 [node name="AI" type="Node2D" groups=["enemy"]]
 script = ExtResource( 1 )

@@ -57,7 +57,7 @@ func _physics_process(delta):
 				if abs(actor.global_position.angle_to(target.global_position)) <= 0.1:
 					weapon.shoot()
 			else:
-				print("Error: Engage state but not weapon/target")
+				print("Error: Engage state but no weapon/target")
 		State.ADVANCE:
 			var path = pathfinding.get_new_path(global_position, next_base)
 			if path.size() > 1:
