@@ -27,7 +27,9 @@ func reload():
 	current_weapon.start_reload()
 
 func switch_weapon(weapon: Weapon):
-	if weapon == current_weapon:
+	# If it's the current weapon switching isn't necessary
+	# If the weapon is reloading a switch shouldn't be possible 
+	if weapon == current_weapon or current_weapon.animation_player.get_current_animation() == "reload":
 		return
 	current_weapon.hide()
 	weapon.show()
