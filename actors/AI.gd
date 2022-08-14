@@ -17,7 +17,6 @@ onready var path_line = $PathLine
 var current_state: int = -1 setget set_state
 var target: KinematicBody2D = null
 var actor: Actor = null
-var weapon: Weapon = null
 var weapon_manager: WeaponManager = null
 var team: int = -1
 
@@ -53,7 +52,7 @@ func _physics_process(delta):
 					patrol_timer.start()
 					path_line.clear_points()
 		State.ENGAGE:
-			if target != null and weapon != null:
+			if target != null and weapon_manager != null:
 				actor.rotate_toward(target.global_position)
 				if abs(actor.global_position.angle_to(target.global_position)) <= 0.1:
 					weapon_manager.shoot()
@@ -72,16 +71,15 @@ func _physics_process(delta):
 		_:
 			print("Error: Enemy state should not exist")
 
-func initialize(actor: KinematicBody2D, weapon: Weapon, weapon_manager: WeaponManager, team: int):
+func initialize(actor: KinematicBody2D, weapon_manager: WeaponManager, team: int):
 	self.actor = actor
-	self.weapon = weapon
 	self.weapon_manager = weapon_manager
 	self.team = team
-	weapon.connect("weapon_out_of_ammo", self, "handle_reload")
 	
+	# Connect all weapons in the manager to the handle reload function
 	var weapons = weapon_manager.get_all_weapons()
-	for m_weapon in weapons:
-		m_weapon.connect("weapon_out_of_ammo", self, "handle_reload")
+	for weapon in weapons:
+		weapon.connect("weapon_out_of_ammo", self, "handle_reload")
 
 func set_path_line(points: Array):
 	if not should_draw_path_line:
