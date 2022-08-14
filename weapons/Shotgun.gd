@@ -5,6 +5,8 @@ export (int) var bullets_per_shot = 10
 export (int) var bullet_spread = 10
 
 
+# TODO: Sometimes the weapon isn't shoot despite everything working. The click doesn't seem to ...
+# ... reach the shoot() function
 func shoot():
 	if debug_mode:
 		print("\nAmmo: " + str(current_ammo != 0) + "\nCooldown: " + str(attack_cooldown.is_stopped()) + "\nNot reloading: " + str(not animation_player.get_current_animation() == "reload") + "\nBullet Instance: " + str(Bullet != null) + "\n")
