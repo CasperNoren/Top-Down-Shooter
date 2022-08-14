@@ -4,6 +4,7 @@ const Player = preload("res://actors/Player.tscn")
 const GameOverScreen = preload("res://ui/GameOverScreen.tscn")
 const PauseScreen = preload("res://ui/PauseScreen.tscn")
 
+onready var player_respawn_timer = $PlayerRespawnTimer
 onready var capturable_base_manager = $CapturableBaseManager
 onready var ally_ai = $AllyMapAI
 onready var enemy_ai = $EnemyMapAI
@@ -38,8 +39,13 @@ func spawn_player():
 	var player = Player.instance()
 	add_child(player)
 	player.set_camera_transform(camera.get_path())
-	player.connect("died", self, "spawn_player")
+	player.connect("died", self, "handle_player_died")
 	gui.set_player(player)
+
+func handle_player_died():
+	# Signal could be emitted multiple times which would otherwise cause multiple players to spawn
+	if player_respawn_timer.is_stopped():
+		player_respawn_timer.start()
 
 func handle_player_win():
 	var game_over = GameOverScreen.instance()
@@ -62,3 +68,7 @@ func _unhandled_input(event):
 	if event.is_action_pressed("pause"):
 		var pause_menu = PauseScreen.instance()
 		add_child(pause_menu)
+
+
+func _on_PlayerRespawnTimer_timeout():
+	spawn_player()

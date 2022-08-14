@@ -639,6 +639,10 @@ position = Vector2( 1917, 265 )
 [node name="BulletManager" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
+[node name="PlayerRespawnTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [node name="AllyMapAI" parent="." instance=ExtResource( 2 )]
 team_name = 1
 unit = ExtResource( 7 )
@@ -685,3 +689,5 @@ script = ExtResource( 11 )
 script = ExtResource( 12 )
 
 [node name="GUI" parent="." instance=ExtResource( 9 )]
+
+[connection signal="timeout" from="PlayerRespawnTimer" to="." method="_on_PlayerRespawnTimer_timeout"]
