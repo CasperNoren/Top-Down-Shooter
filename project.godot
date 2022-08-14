@@ -53,6 +53,11 @@ _global_script_classes=[ {
 "class": "Weapon",
 "language": "GDScript",
 "path": "res://actors/Weapon.gd"
+}, {
+"base": "Node2D",
+"class": "WeaponManager",
+"language": "GDScript",
+"path": "res://actors/WeaponManager.gd"
 } ]
 _global_script_class_icons={
 "AI": "",
@@ -63,7 +68,8 @@ _global_script_class_icons={
 "PathFinding": "",
 "Player": "",
 "Team": "",
-"Weapon": ""
+"Weapon": "",
+"WeaponManager": ""
 }
 
 [application]

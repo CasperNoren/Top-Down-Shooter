@@ -8,7 +8,7 @@ export (int) var speed = 150
 
 onready var collision_shape = $CollisionShape2D
 onready var blink_target = $BlinkTarget
-onready var weapon_manager = $WeaponManager
+onready var weapon_manager = $PlayerWeaponManager
 onready var health_stat = $Health
 onready var team = $Team
 onready var camera_transform = $CameraTransform

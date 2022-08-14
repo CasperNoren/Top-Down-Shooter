@@ -18,6 +18,7 @@ var current_state: int = -1 setget set_state
 var target: KinematicBody2D = null
 var actor: Actor = null
 var weapon: Weapon = null
+var weapon_manager: WeaponManager = null
 var team: int = -1
 
 #Patrol state:
@@ -55,7 +56,7 @@ func _physics_process(delta):
 			if target != null and weapon != null:
 				actor.rotate_toward(target.global_position)
 				if abs(actor.global_position.angle_to(target.global_position)) <= 0.1:
-					weapon.shoot()
+					weapon_manager.shoot()
 			else:
 				print("Error: Engage state but no weapon/target")
 		State.ADVANCE:
@@ -71,11 +72,16 @@ func _physics_process(delta):
 		_:
 			print("Error: Enemy state should not exist")
 
-func initialize(actor: KinematicBody2D, weapon: Weapon, team: int):
+func initialize(actor: KinematicBody2D, weapon: Weapon, weapon_manager: WeaponManager, team: int):
 	self.actor = actor
 	self.weapon = weapon
+	self.weapon_manager = weapon_manager
 	self.team = team
 	weapon.connect("weapon_out_of_ammo", self, "handle_reload")
+	
+	var weapons = weapon_manager.get_all_weapons()
+	for m_weapon in weapons:
+		m_weapon.connect("weapon_out_of_ammo", self, "handle_reload")
 
 func set_path_line(points: Array):
 	if not should_draw_path_line:
@@ -104,7 +110,7 @@ func set_state(new_state: int):
 	emit_signal("state_changed", current_state)
 
 func handle_reload():
-	weapon.start_reload()
+	weapon_manager.reload()
 
 func _on_PatrolTimer_timeout():
 	var patrol_range = 150

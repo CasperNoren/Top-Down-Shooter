@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://actors/WeaponManager.tscn" type="PackedScene" id=1]
+[ext_resource path="res://actors/PlayerWeaponManager.gd" type="Script" id=2]
+
+[node name="PlayerWeaponManager" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
