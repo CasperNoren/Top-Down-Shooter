@@ -12,6 +12,7 @@ rotation = -1.5708
 scale = Vector2( 0.6, 0.6 )
 script = ExtResource( 2 )
 max_ammo = 5
+debug_mode = true
 bullets_per_shot = 10
 bullet_spread = 10
 

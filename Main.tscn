@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=2]
+[gd_scene load_steps=69 format=2]
 
 [ext_resource path="res://assets/Tilesheet/tilesheet_complete.png" type="Texture" id=1]
 [ext_resource path="res://MapAI.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://PathFinding.tscn" type="PackedScene" id=10]
 [ext_resource path="res://ImpactManager.gd" type="Script" id=11]
 [ext_resource path="res://BlinkManager.gd" type="Script" id=12]
+[ext_resource path="res://MoneyManager.gd" type="Script" id=13]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -639,6 +640,12 @@ position = Vector2( 1917, 265 )
 [node name="BulletManager" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
+[node name="MoneyManager" type="Node2D" parent="."]
+script = ExtResource( 13 )
+
+[node name="Timer" type="Timer" parent="MoneyManager"]
+autostart = true
+
 [node name="PlayerRespawnTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
@@ -690,4 +697,5 @@ script = ExtResource( 12 )
 
 [node name="GUI" parent="." instance=ExtResource( 9 )]
 
+[connection signal="timeout" from="MoneyManager/Timer" to="MoneyManager" method="_on_Timer_timeout"]
 [connection signal="timeout" from="PlayerRespawnTimer" to="." method="_on_PlayerRespawnTimer_timeout"]

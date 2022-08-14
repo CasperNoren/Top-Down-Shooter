@@ -9,6 +9,7 @@ onready var capturable_base_manager = $CapturableBaseManager
 onready var ally_ai = $AllyMapAI
 onready var enemy_ai = $EnemyMapAI
 onready var bullet_manager = $BulletManager
+onready var money_manager = $MoneyManager
 onready var player: Player = $Player
 onready var camera = $Camera2D
 onready var gui = $GUI
@@ -63,6 +64,7 @@ func handle_player_lost():
 
 func handle_bases_changed(bases: Array):
 	gui.set_bases(bases)
+	money_manager.handle_bases_changed(bases)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause"):
