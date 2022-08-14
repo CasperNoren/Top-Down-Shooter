@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/Spritesheet/spritesheet_characters.png" type="Texture" id=1]
 [ext_resource path="res://actors/Player.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Team.tscn" type="PackedScene" id=6]
 [ext_resource path="res://weapons/Pistol.tscn" type="PackedScene" id=7]
 [ext_resource path="res://weapons/SubmachineGun.tscn" type="PackedScene" id=8]
+[ext_resource path="res://weapons/Shotgun.tscn" type="PackedScene" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 19.5 )
@@ -54,3 +55,5 @@ script = ExtResource( 5 )
 [node name="Pistol" parent="WeaponManager" instance=ExtResource( 7 )]
 
 [node name="SubmachineGun" parent="WeaponManager" instance=ExtResource( 8 )]
+
+[node name="Shotgun" parent="WeaponManager" instance=ExtResource( 9 )]

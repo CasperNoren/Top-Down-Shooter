@@ -8,6 +8,7 @@ signal weapon_out_of_ammo
 export (PackedScene) var Bullet
 export (int) var max_ammo = 10
 export (bool) var semi_auto = true
+export (bool) var debug_mode = false
 
 var team: int = -1
 var current_ammo: int = max_ammo setget set_current_ammo
@@ -25,6 +26,10 @@ func initialize(team: int):
 	self.team = team
 
 func shoot():
+	# Good for testing what stops the gun from firing:
+	if debug_mode:
+		print("\nAmmo: " + str(current_ammo != 0) + "\nCooldown: " + str(attack_cooldown.is_stopped()) + "\nNot reloading: " + str(not animation_player.get_current_animation() == "reload") + "\nBullet Instance: " + str(Bullet != null) + "\n")
+	# print(str(current_ammo != 0) + " " + str(attack_cooldown.is_stopped()) + " " + str(not animation_player.get_current_animation() == "reload") + " " + str(Bullet != null))
 	if current_ammo != 0 and attack_cooldown.is_stopped() and not animation_player.get_current_animation() == "reload" and Bullet != null:
 		var bullet_instance = Bullet.instance()
 		var direction = (end_of_gun.global_position - global_position).normalized()
