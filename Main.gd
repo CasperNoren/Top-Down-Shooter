@@ -47,8 +47,7 @@ func spawn_player():
 	gui.set_player(player)
 	
 	# Get the Player-Team's weapons and give them to the player
-	var bought_weapons = ally_ai.get_all_team_weapons()
-	for weapon in bought_weapons:
+	for weapon in ally_ai.bought_weapons_array:
 		player.weapon_manager.add_weapon(weapon.instance())
 
 func handle_player_died():
