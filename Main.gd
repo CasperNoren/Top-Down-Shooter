@@ -36,13 +36,17 @@ func _ready() -> void:
 	spawn_player()
 
 func spawn_player():
+	# Create player
 	print("Spawned player")
 	var player = Player.instance()
 	add_child(player)
+	
+	# Set up camera, death signal and gui connection
 	player.set_camera_transform(camera.get_path())
 	player.connect("died", self, "handle_player_died")
 	gui.set_player(player)
 	
+	# Get the Player-Team's weapons and give them to the player
 	var bought_weapons = ally_ai.get_all_team_weapons()
 	for weapon in bought_weapons:
 		player.weapon_manager.add_weapon(weapon.instance())
@@ -78,4 +82,5 @@ func _unhandled_input(event):
 
 
 func _on_PlayerRespawnTimer_timeout():
+	# TODO: Add count down?
 	spawn_player()

@@ -29,12 +29,16 @@ func get_all_weapons() -> Array:
 	return weapons
 
 func add_weapon(weapon: Weapon):
-	# Don't want duplicates in array
-	if not weapons.has(weapon):
-		# If it is not added as a child it won't actually be useable
-		add_child(weapon)
-		weapons.append(weapon)
-		weapon.hide()
+	# Don't want duplicates in array 
+	for already_owned_weapon in weapons:
+		if weapon.get_filename() == already_owned_weapon.get_filename():
+			print("Tried adding weapon but weapon already owned: " + str(weapon.get_filename()))
+			return
+	# If it is not added as a child it won't actually be useable
+	add_child(weapon)
+	weapons.append(weapon)
+	# Only current_weapon should be visible
+	weapon.hide()
 
 func shoot():
 	current_weapon.shoot()
