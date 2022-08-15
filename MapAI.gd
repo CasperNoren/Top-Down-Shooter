@@ -72,20 +72,24 @@ func assign_next_capturable_base_to_units(base: CapturableBase):
 		set_unit_ai_to_advance_to_next_base(unit)
 
 func spawn_unit(spawn_location: Vector2):
+	# Create unit
 	var unit_instance = unit.instance()
 	unit_container.add_child(unit_instance)
 	unit_instance.global_position = spawn_location
+	# Setup death handling and pathfinding
 	unit_instance.connect("died", self, "handle_unit_death")
 	unit_instance.ai.pathfinding = pathfinding
 	set_unit_ai_to_advance_to_next_base(unit_instance)
 	
+	# Handle bought weapons
 	for weapon in bought_weapons_array:
 		unit_instance.weapon_manager.add_weapon(weapon.instance())
 	# There is a switch to random weapon in AI but that is activated before all the bought ...
 	# ... weapons are added
 	unit_instance.weapon_manager.switch_to_random_weapon()
 	
-	print(team.team, " spawned: ", unit, " at: ", spawn_location)
+	# Team, unit, location, current weapon
+	print(team.team, " spawned: ", unit_instance, " at: ", spawn_location, " weapon: ", unit_instance.weapon_manager.current_weapon)
 
 func set_unit_ai_to_advance_to_next_base(unit: Actor):
 	if target_base != null:
