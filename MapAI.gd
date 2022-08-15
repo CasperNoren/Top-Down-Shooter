@@ -20,12 +20,15 @@ var pathfinding: PathFinding
 onready var team = $Team
 onready var unit_container = $UnitContainer
 onready var respawn_timer = $RespawnTimer
+onready var money_manager = $MoneyManager
 
 func initialize(capturable_bases: Array, respawn_points: Array, pathfinding: PathFinding):
 	if capturable_bases.size() == 0 or respawn_points.size() == 0 or unit == null:
 		push_error("MapAI not initialized")
 		return
 	team.team = team_name
+	
+	money_manager.initialize(team.team)
 	
 	self.pathfinding = pathfinding
 	self.capturable_bases = capturable_bases

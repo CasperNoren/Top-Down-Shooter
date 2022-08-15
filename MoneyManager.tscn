@@ -10,6 +10,5 @@ script = ExtResource( 1 )
 autostart = true
 
 [node name="Team" parent="." instance=ExtResource( 2 )]
-team = 1
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -64,7 +64,8 @@ func handle_player_lost():
 
 func handle_bases_changed(bases: Array):
 	gui.set_bases(bases)
-	money_manager.handle_bases_changed(bases)
+	ally_ai.money_manager.handle_bases_changed(bases)
+	enemy_ai.money_manager.handle_bases_changed(bases)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause"):
