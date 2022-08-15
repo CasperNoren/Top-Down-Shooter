@@ -15,5 +15,6 @@ autostart = true
 [node name="WeaponContainer" type="Node2D" parent="."]
 
 [node name="Shotgun" parent="WeaponContainer" instance=ExtResource( 3 )]
+visible = false
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
