@@ -31,7 +31,7 @@ func _unhandled_input(event):
 
 func try_buy():
 	# This function is just a test function
-	var cost: int = 20
+	var cost: int = 2
 	if money >= cost:
 		print("Bought " + str(shotgun))
 		money -= cost
