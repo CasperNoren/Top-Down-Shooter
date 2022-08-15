@@ -119,3 +119,6 @@ func add_weapon_to_team(weapon):
 	
 	for unit in unit_container.get_children():
 		unit.weapon_manager.add_weapon(weapon.instance())
+
+func get_all_team_weapons():
+	return bought_weapons_array

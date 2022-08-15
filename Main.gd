@@ -42,6 +42,10 @@ func spawn_player():
 	player.set_camera_transform(camera.get_path())
 	player.connect("died", self, "handle_player_died")
 	gui.set_player(player)
+	
+	var bought_weapons = ally_ai.get_all_team_weapons()
+	for weapon in bought_weapons:
+		player.weapon_manager.add_weapon(weapon.instance())
 
 func handle_player_died():
 	# Signal could be emitted multiple times which would otherwise cause multiple players to spawn
