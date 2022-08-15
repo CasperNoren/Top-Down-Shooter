@@ -1,15 +1,18 @@
 extends Node2D
 
+signal bought_weapon(weapon)
+
 onready var team = $Team
+onready var shotgun = preload("res://weapons/Shotgun.tscn")
 
 var money: int = 0;
-var number_of_team_bases: int = 0
+var number_of_team_bases: int = 1
 
 func initialize(team_name: int):
 	team.team = team_name
 
 func handle_bases_changed(bases):
-	number_of_team_bases = 0
+	number_of_team_bases = 1
 	for base in bases:
 		if base.team.team == team.team:
 			number_of_team_bases += 1
@@ -23,6 +26,10 @@ func _unhandled_input(event):
 		try_buy()
 
 func try_buy():
-	if money >= 20:
-		money -= 20
-		print("Bought")
+	var cost: int = 20
+	if money >= cost:
+		print("Bought " + str(shotgun))
+		money -= cost
+		emit_signal("bought_weapon", shotgun)
+	else:
+		print("not enough")
