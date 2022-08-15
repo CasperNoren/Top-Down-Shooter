@@ -31,10 +31,10 @@ func get_all_weapons() -> Array:
 func add_weapon(weapon: Weapon):
 	# Don't want duplicates in array
 	if not weapons.has(weapon):
+		# If it is not added as a child it won't actually be useable
 		add_child(weapon)
 		weapons.append(weapon)
 		weapon.hide()
-		print("Added: " + str(weapon))
 
 func shoot():
 	current_weapon.shoot()
@@ -60,7 +60,6 @@ func get_weapon_from_index(index: int) -> Weapon:
 	return weapons[index]
 
 func switch_to_random_weapon():
+	# Using get_weapon_from_index() is not strictly necessary but it feels safer
 	var new_weapon = get_weapon_from_index(randi() % weapons.size())
-	print("Actor has: " + str(weapons))
-	print("Actor choose: " + str(new_weapon))
 	switch_weapon(new_weapon)

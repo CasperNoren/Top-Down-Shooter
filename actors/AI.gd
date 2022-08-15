@@ -81,8 +81,8 @@ func initialize(actor: KinematicBody2D, weapon_manager: WeaponManager, team: int
 	for weapon in weapons:
 		weapon.connect("weapon_out_of_ammo", self, "handle_reload")
 	
-	# Select and switch to random gun in manager
-	weapon_manager.switch_weapon(weapons[randi() % weapons.size()])
+	# For now selection is just random from the available weapons
+	weapon_manager.switch_to_random_weapon()
 
 func set_path_line(points: Array):
 	if not should_draw_path_line:
