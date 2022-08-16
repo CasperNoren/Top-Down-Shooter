@@ -42,8 +42,10 @@ func shoot():
 		muzzle_flash_particles.emitting = true
 
 func start_reload():
-	muzzle_flash.hide()
-	animation_player.play("reload")
+	# No reason to start a reload if it's full
+	if not current_ammo >= max_ammo:
+		muzzle_flash.hide()
+		animation_player.play("reload")
 	
 func _stop_reload():
 	current_ammo = max_ammo
