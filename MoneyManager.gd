@@ -42,13 +42,15 @@ func try_buy():
 		# TODO: Change to menu option
 		match times_bought:
 			0:
-				print("Bought " + str(shotgun))
-				emit_signal("bought_weapon", shotgun)
-			1:
-				print("Bought " + str(submachinegun))
+				print("Bought: " + str(submachinegun))
 				emit_signal("bought_weapon", submachinegun)
+			1:
+				print("Bought: " + str(shotgun))
+				emit_signal("bought_weapon", shotgun)
 			_:
-				emit_signal("bought_team_members", 1)
+				var team_members_to_buy = 1
+				print("Bought: ", team_members_to_buy, " team member(s)")
+				emit_signal("bought_team_members", team_members_to_buy)
 		times_bought += 1
 	else:
 		print("Not enough")
