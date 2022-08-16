@@ -9,6 +9,7 @@ export (PackedScene) var Bullet
 export (int) var max_ammo = 10
 export (bool) var semi_auto = true
 export (bool) var debug_mode = false
+export (float) var damage_multiplier = 1
 
 var team: int = -1
 var current_ammo: int = max_ammo setget set_current_ammo
@@ -33,6 +34,7 @@ func shoot():
 	# print(str(current_ammo != 0) + " " + str(attack_cooldown.is_stopped()) + " " + str(not animation_player.get_current_animation() == "reload") + " " + str(Bullet != null))
 	if current_ammo != 0 and attack_cooldown.is_stopped() and not animation_player.get_current_animation() == "reload" and Bullet != null:
 		var bullet_instance = Bullet.instance()
+		bullet_instance.damage *= damage_multiplier
 		var direction = (end_of_gun.global_position - global_position).normalized()
 		GlobalSignals.emit_signal("bullet_fired", bullet_instance, team, end_of_gun.global_position, direction)
 		attack_cooldown.start()

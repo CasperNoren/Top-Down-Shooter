@@ -6,6 +6,7 @@
 [node name="SubmachineGun" instance=ExtResource( 1 )]
 max_ammo = 25
 semi_auto = false
+damage_multiplier = 0.3
 
 [node name="Sprite" parent="." index="0"]
 position = Vector2( 4, 0 )

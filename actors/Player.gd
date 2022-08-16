@@ -49,8 +49,8 @@ func blink():
 	GlobalSignals.emit_signal("blink_used", global_position, global_rotation)
 	global_position = blink_target.global_position
 
-func handle_hit():
-	health_stat.health -= 20
+func handle_hit(damage: int):
+	health_stat.health -= damage
 	emit_signal("player_health_changed", health_stat.health)
 	if health_stat.health <= 0:
 		die()

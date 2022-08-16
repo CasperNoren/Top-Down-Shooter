@@ -16,5 +16,6 @@ autostart = true
 
 [node name="Shotgun" parent="WeaponContainer" instance=ExtResource( 3 )]
 visible = false
+damage_multiplier = 0.4
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

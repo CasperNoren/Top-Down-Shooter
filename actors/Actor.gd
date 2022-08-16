@@ -29,8 +29,8 @@ func has_reached_position(location: Vector2) -> bool:
 func get_team() -> int:
 	return team.team
 
-func handle_hit():
-	health_stat.health -= 20
+func handle_hit(damage: int):
+	health_stat.health -= damage
 	if health_stat.health <= 0:
 		die()
 

@@ -2,6 +2,7 @@ extends Area2D
 class_name Bullet
 
 export (int) var speed = 15
+export (int) var damage = 20
 
 onready var KillTimer = $KillTimer
 
@@ -30,5 +31,5 @@ func _on_Bullet_body_entered(body):
 	if body.has_method("handle_hit"):
 		GlobalSignals.emit_signal("bullet_impact", body.global_position, direction)
 		if body.has_method("get_team") and body.get_team() != team:
-			body.handle_hit()
+			body.handle_hit(damage)
 	queue_free()
