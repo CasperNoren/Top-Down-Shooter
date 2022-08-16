@@ -37,4 +37,4 @@ func try_buy():
 		money -= cost
 		emit_signal("bought_weapon", shotgun)
 	else:
-		print("not enough")
+		print("Not enough")
