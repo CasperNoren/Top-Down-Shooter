@@ -32,6 +32,7 @@ func initialize(capturable_bases: Array, respawn_points: Array, pathfinding: Pat
 	
 	money_manager.initialize(team.team)
 	money_manager.connect("bought_weapon", self, "add_weapon_to_team")
+	money_manager.connect("bought_team_members", self, "add_team_members")
 	
 	self.pathfinding = pathfinding
 	self.capturable_bases = capturable_bases
@@ -72,6 +73,7 @@ func assign_next_capturable_base_to_units(base: CapturableBase):
 		set_unit_ai_to_advance_to_next_base(unit)
 
 func spawn_unit(spawn_location: Vector2):
+	# TODO: Check that spawn isn't occupied
 	# Create unit
 	var unit_instance = unit.instance()
 	unit_container.add_child(unit_instance)
@@ -84,8 +86,7 @@ func spawn_unit(spawn_location: Vector2):
 	# Handle bought weapons
 	for weapon in bought_weapons_array:
 		unit_instance.weapon_manager.add_weapon(weapon.instance())
-	# There is a switch to random weapon in AI but that is activated before all the bought ...
-	# ... weapons are added
+	# There is a switch to random weapon in AI but that is activated before all the bought weapons are added
 	unit_instance.weapon_manager.switch_to_random_weapon()
 	
 	# Team, unit, location, current weapon
@@ -124,3 +125,8 @@ func add_weapon_to_team(weapon):
 	for unit in unit_container.get_children():
 		unit.weapon_manager.add_weapon(weapon.instance())
 
+func add_team_members(amount: int):
+	max_units_alive += amount
+	# Otherwise the new unit wouldn't come until a team member has died
+	if respawn_timer.is_stopped() and unit_container.get_children().size() < max_units_alive:
+		respawn_timer.start()

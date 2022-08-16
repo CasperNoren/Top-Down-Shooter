@@ -1,6 +1,7 @@
 extends Node2D
 
 signal bought_weapon(weapon)
+signal bought_team_members(amount)
 
 onready var team = $Team
 # TODO: Should probably have an array of all scenes that can be bought
@@ -22,7 +23,7 @@ func _on_Timer_timeout():
 	# TODO: Add constant to multiply? 
 	money += number_of_team_bases
 	# TODO: Add money to GUI
-	print(str(team.team) + " money: " + str(money) + "\nNumber of bases: " + str(number_of_team_bases))
+	print(str(team.team) + " money: " + str(money) + "| Number of bases: " + str(number_of_team_bases))
 
 func _unhandled_input(event):
 	# Both sides share this scene but controls should only work for the player side
@@ -36,5 +37,7 @@ func try_buy():
 		print("Bought " + str(shotgun))
 		money -= cost
 		emit_signal("bought_weapon", shotgun)
+		# Should be a different option
+		emit_signal("bought_team_members", 1)
 	else:
 		print("Not enough")
