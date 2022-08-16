@@ -38,7 +38,7 @@ func initialize(capturable_bases: Array, respawn_points: Array, pathfinding: Pat
 	self.capturable_bases = capturable_bases
 	self.respawn_points = respawn_points
 	for respawn in respawn_points:
-		spawn_unit(respawn.global_position)
+		spawn_unit(respawn)
 	
 	for base in capturable_bases:
 		base.connect("base_captured", self, "handle_base_captured")
@@ -72,12 +72,17 @@ func assign_next_capturable_base_to_units(base: CapturableBase):
 	for unit in unit_container.get_children():
 		set_unit_ai_to_advance_to_next_base(unit)
 
-func spawn_unit(spawn_location: Vector2):
-	# TODO: Check that spawn isn't occupied
+func spawn_unit(respawn_point: RespawnPoint):
+	respawn_point.global_position
+	if not respawn_point.area_is_empty():
+		# Don't want to spawn multiple units on the same spawn point at the same time
+		print("Tried to spawn but respawn point occupied")
+		respawn_timer.start()
+		return
 	# Create unit
 	var unit_instance = unit.instance()
 	unit_container.add_child(unit_instance)
-	unit_instance.global_position = spawn_location
+	unit_instance.global_position = respawn_point.global_position
 	# Setup death handling and pathfinding
 	unit_instance.connect("died", self, "handle_unit_death")
 	unit_instance.ai.pathfinding = pathfinding
@@ -90,7 +95,7 @@ func spawn_unit(spawn_location: Vector2):
 	unit_instance.weapon_manager.switch_to_random_weapon()
 	
 	# Team, unit, location, current weapon
-	print(team.team, " spawned: ", unit_instance, " at: ", spawn_location, " weapon: ", unit_instance.weapon_manager.current_weapon)
+	print(team.team, " spawned: ", unit_instance, " at: ", respawn_point.global_position, " weapon: ", unit_instance.weapon_manager.current_weapon)
 
 func set_unit_ai_to_advance_to_next_base(unit: Actor):
 	if target_base != null:
@@ -107,7 +112,7 @@ func handle_unit_death():
 
 func _on_RespawnTimer_timeout():
 	var respawn = respawn_points[next_spawn_to_use]
-	spawn_unit(respawn.global_position)
+	spawn_unit(respawn)
 	#Possible substitute: next_spawn_to_use = next_spawn_to_use + 1 % repawn_points.size()
 	next_spawn_to_use += 1
 	if next_spawn_to_use == respawn_points.size():
