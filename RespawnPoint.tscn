@@ -3,7 +3,7 @@
 [ext_resource path="res://RespawnPoint.gd" type="Script" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 35.0143
+radius = 63.0079
 
 [node name="RespawnPoint" type="Position2D"]
 position = Vector2( -122, 36 )

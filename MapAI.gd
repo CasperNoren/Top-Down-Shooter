@@ -9,7 +9,7 @@ enum BaseCaptureStartOrder {
 export (Team.TeamName) var team_name = Team.TeamName.NEUTRAL
 export (BaseCaptureStartOrder) var base_capture_start_order
 export (PackedScene) var unit = null
-export (int) var max_units_alive = 4
+export (int) var max_units_alive = 6 
 
 var target_base: CapturableBase = null
 var capturable_bases: Array = []
@@ -37,8 +37,14 @@ func initialize(capturable_bases: Array, respawn_points: Array, pathfinding: Pat
 	self.pathfinding = pathfinding
 	self.capturable_bases = capturable_bases
 	self.respawn_points = respawn_points
+	
+	# Spawn as many units on all spawn points then let the respawn system take care of the extra
 	for respawn in respawn_points:
-		spawn_unit(respawn)
+		# Could have less max_units_alive than spawn points so the check is good to have just in case
+		if unit_container.get_children().size() < max_units_alive:
+			spawn_unit(respawn)
+	if unit_container.get_children().size() < max_units_alive:
+		respawn_timer.start()
 	
 	for base in capturable_bases:
 		base.connect("base_captured", self, "handle_base_captured")
@@ -74,6 +80,7 @@ func assign_next_capturable_base_to_units(base: CapturableBase):
 
 func spawn_unit(respawn_point: RespawnPoint):
 	respawn_point.global_position
+	print("Area is empty check: " + str(respawn_point.area_is_empty()))
 	if not respawn_point.area_is_empty():
 		# Don't want to spawn multiple units on the same spawn point at the same time
 		print("Tried to spawn but respawn point occupied")
@@ -97,6 +104,14 @@ func spawn_unit(respawn_point: RespawnPoint):
 	# Team, unit, location, current weapon
 	print(team.team, " spawned: ", unit_instance, " at: ", respawn_point.global_position, " weapon: ", unit_instance.weapon_manager.current_weapon)
 
+func spawn_unit_at_next_base():
+	var respawn = respawn_points[next_spawn_to_use]
+	spawn_unit(respawn)
+	#Possible substitute: next_spawn_to_use = next_spawn_to_use + 1 % repawn_points.size()
+	next_spawn_to_use += 1
+	if next_spawn_to_use == respawn_points.size():
+		next_spawn_to_use = 0
+
 func set_unit_ai_to_advance_to_next_base(unit: Actor):
 	if target_base != null:
 		var ai: AI = unit.ai
@@ -111,12 +126,7 @@ func handle_unit_death():
 		respawn_timer.start()
 
 func _on_RespawnTimer_timeout():
-	var respawn = respawn_points[next_spawn_to_use]
-	spawn_unit(respawn)
-	#Possible substitute: next_spawn_to_use = next_spawn_to_use + 1 % repawn_points.size()
-	next_spawn_to_use += 1
-	if next_spawn_to_use == respawn_points.size():
-		next_spawn_to_use = 0
+	spawn_unit_at_next_base()
 	
 	if unit_container.get_children().size() < max_units_alive:
 		respawn_timer.start()
