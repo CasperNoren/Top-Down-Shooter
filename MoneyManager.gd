@@ -6,9 +6,12 @@ signal bought_team_members(amount)
 onready var team = $Team
 # TODO: Should probably have an array of all scenes that can be bought
 onready var shotgun = preload("res://weapons/Shotgun.tscn")
+onready var submachinegun = preload("res://weapons/SubmachineGun.tscn")
 
 var money: int = 0;
 var number_of_team_bases: int = 1
+# TODO: Remove, this is a test variable to use before a menu can choose what to buy
+var times_bought: int = 0
 
 func initialize(team_name: int):
 	team.team = team_name
@@ -34,10 +37,18 @@ func try_buy():
 	# This function is just a test function
 	var cost: int = 2
 	if money >= cost:
-		print("Bought " + str(shotgun))
 		money -= cost
-		emit_signal("bought_weapon", shotgun)
-		# Should be a different option
-		emit_signal("bought_team_members", 1)
+		
+		# TODO: Change to menu option
+		match times_bought:
+			0:
+				print("Bought " + str(shotgun))
+				emit_signal("bought_weapon", shotgun)
+			1:
+				print("Bought " + str(submachinegun))
+				emit_signal("bought_weapon", submachinegun)
+			_:
+				emit_signal("bought_team_members", 1)
+		times_bought += 1
 	else:
 		print("Not enough")

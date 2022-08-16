@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://MoneyManager.gd" type="Script" id=1]
 [ext_resource path="res://Team.tscn" type="PackedScene" id=2]
 [ext_resource path="res://weapons/Shotgun.tscn" type="PackedScene" id=3]
+[ext_resource path="res://weapons/SubmachineGun.tscn" type="PackedScene" id=4]
 
 [node name="MoneyManager" type="Node2D"]
 script = ExtResource( 1 )
@@ -16,6 +17,7 @@ autostart = true
 
 [node name="Shotgun" parent="WeaponContainer" instance=ExtResource( 3 )]
 visible = false
-damage_multiplier = 0.4
+
+[node name="SubmachineGun" parent="WeaponContainer" instance=ExtResource( 4 )]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
