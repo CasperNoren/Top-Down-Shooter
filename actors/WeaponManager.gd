@@ -8,6 +8,7 @@ onready var current_weapon: Weapon = $Pistol
 
 var weapons: Array = []
 var current_weapon_index = 0
+var team: int = -1
 
 # TODO: Make general for actors and make the player's weapon manager an extension (using inheritance)
 
@@ -18,6 +19,7 @@ func _ready():
 	current_weapon.show()
 
 func initialize(team: int):
+	self.team = team
 	for weapon in weapons:
 		weapon.initialize(team)
 
@@ -37,6 +39,7 @@ func add_weapon(weapon: Weapon):
 	# If it is not added as a child it won't actually be useable
 	add_child(weapon)
 	weapons.append(weapon)
+	weapon.initialize(team)
 	# Only current_weapon should be visible
 	weapon.hide()
 
