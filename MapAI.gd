@@ -80,10 +80,8 @@ func assign_next_capturable_base_to_units(base: CapturableBase):
 
 func spawn_unit(respawn_point: RespawnPoint):
 	respawn_point.global_position
-	print("Area is empty check: " + str(respawn_point.area_is_empty()))
 	if not respawn_point.area_is_empty():
 		# Don't want to spawn multiple units on the same spawn point at the same time
-		print("Tried to spawn but respawn point occupied")
 		respawn_timer.start()
 		return
 	# Create unit
