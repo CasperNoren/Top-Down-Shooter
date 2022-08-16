@@ -19,3 +19,6 @@ wait_time = 0.1
 
 [node name="MuzzleFlash" parent="." index="3"]
 position = Vector2( 38, 0 )
+
+[node name="MuzzleFlashParticles" parent="." index="5"]
+position = Vector2( 24, 0 )

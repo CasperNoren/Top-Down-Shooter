@@ -4,7 +4,7 @@ extends Weapon
 export (int) var bullets_per_shot = 10
 export (int) var bullet_spread = 10
 
-onready var muzzle_flash_particles = $MuzzleFlashParticles
+#onready var muzzle_flash_particles = $MuzzleFlashParticles
 
 # TODO: Sometimes the weapon isn't shoot despite everything working. The click doesn't seem to ...
 # ... reach the shoot() function

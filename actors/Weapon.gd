@@ -17,6 +17,7 @@ onready var end_of_gun = $EndOfGun
 onready var attack_cooldown = $AttackCooldown
 onready var animation_player = $AnimationPlayer
 onready var muzzle_flash = $MuzzleFlash
+onready var muzzle_flash_particles = $MuzzleFlashParticles
 
 func _ready():
 	muzzle_flash.hide()
@@ -38,6 +39,7 @@ func shoot():
 		animation_player.play("MuzzleFlash")
 		set_current_ammo(current_ammo - 1)
 		
+		muzzle_flash_particles.emitting = true
 
 func start_reload():
 	muzzle_flash.hide()
