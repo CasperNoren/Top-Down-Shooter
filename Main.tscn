@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=2]
+[gd_scene load_steps=69 format=2]
 
 [ext_resource path="res://assets/Tilesheet/tilesheet_complete.png" type="Texture" id=1]
 [ext_resource path="res://MapAI.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://PathFinding.tscn" type="PackedScene" id=10]
 [ext_resource path="res://ImpactManager.gd" type="Script" id=11]
 [ext_resource path="res://BlinkManager.gd" type="Script" id=12]
+[ext_resource path="res://RespawnPoint.tscn" type="PackedScene" id=13]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -654,31 +655,31 @@ unit = ExtResource( 5 )
 
 [node name="AllyRespawnPoints" type="Node2D" parent="."]
 
-[node name="Position2D" type="Position2D" parent="AllyRespawnPoints"]
-position = Vector2( -3, 70 )
+[node name="RespawnPoint" parent="AllyRespawnPoints" instance=ExtResource( 13 )]
+position = Vector2( -27, -28 )
 
-[node name="Position2D2" type="Position2D" parent="AllyRespawnPoints"]
-position = Vector2( -119, 141 )
+[node name="RespawnPoint2" parent="AllyRespawnPoints" instance=ExtResource( 13 )]
+position = Vector2( -155, 131 )
 
-[node name="Position2D3" type="Position2D" parent="AllyRespawnPoints"]
-position = Vector2( -124, 280 )
+[node name="RespawnPoint3" parent="AllyRespawnPoints" instance=ExtResource( 13 )]
+position = Vector2( -211, 289 )
 
-[node name="Position2D4" type="Position2D" parent="AllyRespawnPoints"]
-position = Vector2( -10, 456 )
+[node name="RespawnPoint4" parent="AllyRespawnPoints" instance=ExtResource( 13 )]
+position = Vector2( -75, 517 )
 
 [node name="EnemyRespawnPoints" type="Node2D" parent="."]
 
-[node name="Position2D" type="Position2D" parent="EnemyRespawnPoints"]
-position = Vector2( 2386, 90 )
+[node name="RespawnPoint" parent="EnemyRespawnPoints" instance=ExtResource( 13 )]
+position = Vector2( 2385, 13 )
 
-[node name="Position2D2" type="Position2D" parent="EnemyRespawnPoints"]
-position = Vector2( 2487, 169 )
+[node name="RespawnPoint2" parent="EnemyRespawnPoints" instance=ExtResource( 13 )]
+position = Vector2( 2479, 112 )
 
-[node name="Position2D3" type="Position2D" parent="EnemyRespawnPoints"]
-position = Vector2( 2482, 308 )
+[node name="RespawnPoint3" parent="EnemyRespawnPoints" instance=ExtResource( 13 )]
+position = Vector2( 2514, 376 )
 
-[node name="Position2D4" type="Position2D" parent="EnemyRespawnPoints"]
-position = Vector2( 2404, 464 )
+[node name="RespawnPoint4" parent="EnemyRespawnPoints" instance=ExtResource( 13 )]
+position = Vector2( 2413, 462 )
 
 [node name="PathFinding" parent="." instance=ExtResource( 10 )]
 
