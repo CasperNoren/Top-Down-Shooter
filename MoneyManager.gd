@@ -111,23 +111,22 @@ func try_buy_option(option: int) -> bool:
 			# TODO: Currently not used for any option, no signal exists currrently
 			emit_signal(signal_to_emit, packed_scene, amount)
 			# TODO: Add print for amount
-			print_bought_packed_scene(packed_scene)
 		elif packed_scene != null:
 			emit_signal(signal_to_emit, packed_scene)
-			print_bought_packed_scene(packed_scene)
 		elif amount != -1:
 			emit_signal(signal_to_emit, amount)
-			print("Bought: ", amount, " ", signal_to_emit)
 		else:
 			printerr("Invalid buy option reached signal emitting stage")
 			return false
+		print_bought_option(option, amount)
 		return true
 	else:
 		print("Not enough money to purchase: ", BuyOptions.keys()[option])
 		return false
 
-func print_bought_packed_scene(scene: PackedScene):
-	# Can't use get_filename on packed scene
-	var scene_instance = scene.instance()
-	print("Bought: ", scene_instance.get_filename())
-	scene_instance.queue_free()
+func print_bought_option(option: int, amount: int):
+	# -1 counts as null here
+	if amount == -1:
+		print("Bought: ", BuyOptions.keys()[option])
+	else:
+		print("Bought: ", amount, " ", BuyOptions.keys()[option])
