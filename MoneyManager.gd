@@ -80,33 +80,33 @@ func try_buy():
 		print("Not enough")
 
 func try_buy_option(option: int):
-	var cost: int = 0
+	var cost: int = 20
 	var signal_to_emit: String = ""
-	var packed_scene_or_amount = null
-	# Packed scene is seen as the default in this function
-	var is_packed_scene = true
+	# TODO: Don't like using a non-typed variable
+	var packed_scene: PackedScene = null
+	var amount: int = -1
+	
 	match option:
 			BuyOptions.SUBMACHINEGUN:
 				cost = 1
 				signal_to_emit = "bought_weapon"
-				packed_scene_or_amount = submachinegun
+				packed_scene = submachinegun
 			BuyOptions.SHOTGUN:
 				cost = 2
 				signal_to_emit = "bought_weapon"
-				packed_scene_or_amount = shotgun
+				packed_scene = shotgun
 			BuyOptions.TURRET1:
 				cost = 3
 				signal_to_emit = "bought_turret"
-				packed_scene_or_amount = turret
+				packed_scene = turret
 			BuyOptions.TURRET2:
 				cost = 3
 				signal_to_emit = "bought_turret"
-				packed_scene_or_amount = turret
+				packed_scene = turret
 			BuyOptions.TEAMMEMBER:
 				cost = 1
 				signal_to_emit = "bought_team_members"
-				packed_scene_or_amount = 1
-				is_packed_scene = false
+				amount = 1
 			_:
 				print("Invalid buy option")
 				return
@@ -114,13 +114,20 @@ func try_buy_option(option: int):
 	cost = 0
 	if money >= cost:
 		money -= cost
-		emit_signal(signal_to_emit, packed_scene_or_amount)
 		
-		# TODO: Change to typeof or get_type
-		if is_packed_scene:
-			print_bought_packed_scene(packed_scene_or_amount)
-		else: 
-			print("Bought: ", packed_scene_or_amount, " ", signal_to_emit)
+		if packed_scene != null and amount != -1:
+			# TODO: Currently not used for any option, no signal exists currrently
+			emit_signal(signal_to_emit, packed_scene, amount)
+			# TODO: Add print for amount
+			print_bought_packed_scene(packed_scene)
+		elif packed_scene != null:
+			emit_signal(signal_to_emit, packed_scene)
+			print_bought_packed_scene(packed_scene)
+		elif amount != -1:
+			emit_signal(signal_to_emit, amount)
+			print("Bought: ", amount, " ", signal_to_emit)
+		else:
+			printerr("Invalid buy option reached signal emitting stage")
 
 func print_bought_packed_scene(scene: PackedScene):
 	# Can't use get_filename on packed scene
