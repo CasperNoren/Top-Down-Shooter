@@ -2,11 +2,13 @@ extends Node2D
 
 signal bought_weapon(weapon)
 signal bought_team_members(amount)
+signal bought_turret(turret)
 
 onready var team = $Team
 # TODO: Should probably have an array of all scenes that can be bought
 onready var shotgun = preload("res://weapons/Shotgun.tscn")
 onready var submachinegun = preload("res://weapons/SubmachineGun.tscn")
+onready var turret = preload("res://actors/Turret.tscn")
 
 var money: int = 0;
 var number_of_team_bases: int = 1
@@ -44,11 +46,17 @@ func try_buy():
 		# TODO: Change to menu option
 		match times_bought:
 			0:
-				print("Bought: " + str(submachinegun))
+				print_bought_packed_scene(submachinegun)
 				emit_signal("bought_weapon", submachinegun)
 			1:
-				print("Bought: " + str(shotgun))
+				print_bought_packed_scene(shotgun)
 				emit_signal("bought_weapon", shotgun)
+			2:
+				print_bought_packed_scene(turret)
+				emit_signal("bought_turret", turret)
+			3:
+				print_bought_packed_scene(turret)
+				emit_signal("bought_turret", turret)
 			_:
 				var team_members_to_buy = 1
 				print("Bought: ", team_members_to_buy, " team member(s)")
@@ -56,3 +64,9 @@ func try_buy():
 		times_bought += 1
 	else:
 		print("Not enough")
+
+func print_bought_packed_scene(scene: PackedScene):
+	# Can't use get_filename on packed scene
+	var scene_instance = scene.instance()
+	print("Bought: ", scene_instance.get_filename())
+	scene_instance.queue_free()

@@ -14,6 +14,7 @@ export (int) var max_units_alive = 6
 var target_base: CapturableBase = null
 var capturable_bases: Array = []
 var respawn_points: Array = []
+var turret_spots: Array = []
 var next_spawn_to_use: int = 0
 var pathfinding: PathFinding
 var bought_weapons_array: Array = []
@@ -24,15 +25,18 @@ onready var respawn_timer = $RespawnTimer
 onready var money_manager = $MoneyManager
 onready var bought_weapons_container = $BoughtWeaponsContainer
 
-func initialize(capturable_bases: Array, respawn_points: Array, pathfinding: PathFinding):
+func initialize(capturable_bases: Array, respawn_points: Array, pathfinding: PathFinding, turret_spots: Array):
 	if capturable_bases.size() == 0 or respawn_points.size() == 0 or unit == null:
 		push_error("MapAI not initialized")
 		return
 	team.team = team_name
 	
+	self.turret_spots = turret_spots
+	
 	money_manager.initialize(team.team)
 	money_manager.connect("bought_weapon", self, "add_weapon_to_team")
 	money_manager.connect("bought_team_members", self, "add_team_members")
+	money_manager.connect("bought_turret", self, "add_turret")
 	
 	self.pathfinding = pathfinding
 	self.capturable_bases = capturable_bases
@@ -143,3 +147,16 @@ func add_team_members(amount: int):
 	# Otherwise the new unit wouldn't come until a team member has died
 	if respawn_timer.is_stopped() and unit_container.get_children().size() < max_units_alive:
 		respawn_timer.start()
+
+func add_turret(turret):
+	for turret_spot in turret_spots:
+		# Search for free turret spot
+		# If the spot has a child that means it's already in use
+		if turret_spot.get_children().size() == 0:
+			var new_turret = turret.instance()
+			turret_spot.add_child(new_turret)
+			new_turret.initialize(team.team)
+			# Found spot and added turret stop looking
+			return
+	# All team turret spots occupied
+	print("No turret spot available")

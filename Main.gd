@@ -8,6 +8,8 @@ onready var player_respawn_timer = $PlayerRespawnTimer
 onready var capturable_base_manager = $CapturableBaseManager
 onready var ally_ai = $AllyMapAI
 onready var enemy_ai = $EnemyMapAI
+onready var ally_turret_spots = $AllyTurretSpots
+onready var enemy_turret_spots = $EnemyTurretSpots
 onready var bullet_manager = $BulletManager
 onready var money_manager = $MoneyManager
 onready var player: Player = $Player
@@ -27,8 +29,8 @@ func _ready() -> void:
 	pathfinding.create_navigation_map(ground)
 	
 	var bases = capturable_base_manager.get_capturable_bases()
-	ally_ai.initialize(bases, ally_respawns.get_children(), pathfinding)
-	enemy_ai.initialize(bases, enemy_respawns.get_children(), pathfinding)
+	ally_ai.initialize(bases, ally_respawns.get_children(), pathfinding, ally_turret_spots.get_children())
+	enemy_ai.initialize(bases, enemy_respawns.get_children(), pathfinding, enemy_turret_spots.get_children())
 	capturable_base_manager.connect("player_captured_all_bases", self, "handle_player_win")
 	capturable_base_manager.connect("player_lost_all_bases", self, "handle_player_lost")
 	capturable_base_manager.connect("bases_changed", self, "handle_bases_changed")

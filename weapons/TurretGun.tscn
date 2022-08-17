@@ -9,6 +9,7 @@ load_path = "res://.import/tankDark_barrel1_outline.png-69c726759794a2a37b0aaa77
 [node name="TurretGun" instance=ExtResource( 1 )]
 rotation = -1.5708
 script = ExtResource( 2 )
+damage_multiplier = 1.3
 
 [node name="Sprite" parent="." index="0"]
 texture = SubResource( 1 )
@@ -16,10 +17,15 @@ texture = SubResource( 1 )
 [node name="EndOfGun" parent="." index="1"]
 position = Vector2( -1.90735e-06, 38 )
 
+[node name="AttackCooldown" parent="." index="2"]
+wait_time = 1.5
+
 [node name="MuzzleFlash" parent="." index="3"]
+visible = true
 position = Vector2( -0.799995, 53.0208 )
 rotation = 0.0
 
 [node name="MuzzleFlashParticles" parent="." index="5"]
 position = Vector2( -3.8147e-06, 37 )
 rotation = 0.0
+scale = Vector2( 2, 1.5 )
