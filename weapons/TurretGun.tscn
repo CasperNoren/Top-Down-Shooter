@@ -1,12 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://weapons/Weapon.tscn" type="PackedScene" id=1]
+[ext_resource path="res://weapons/TurretGun.gd" type="Script" id=2]
 
 [sub_resource type="StreamTexture" id=1]
 load_path = "res://.import/tankDark_barrel1_outline.png-69c726759794a2a37b0aaa77c82de2ce.stex"
 
 [node name="TurretGun" instance=ExtResource( 1 )]
 rotation = -1.5708
+script = ExtResource( 2 )
 
 [node name="Sprite" parent="." index="0"]
 texture = SubResource( 1 )

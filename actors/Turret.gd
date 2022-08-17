@@ -43,7 +43,7 @@ func set_state(new_state: int):
 	current_state = new_state
 
 func handle_reload():
-	# Turret shouldn't have to reload but it's good to have just in case
+	# Turret gun technically doesn't have infinite ammo, it just reloads instantly
 	weapon_manager.reload()
 
 func _on_DetectionZone_body_entered(body):
