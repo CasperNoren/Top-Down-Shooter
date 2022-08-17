@@ -13,10 +13,9 @@ enum BuyOptions {
 	TEAMMEMBER
 }
 
-onready var team = $Team
-# TODO: Should probably have an array or enum of all scenes that can be bought
-onready var shotgun = preload("res://weapons/Shotgun.tscn")
+onready var team = $Team 
 onready var submachinegun = preload("res://weapons/SubmachineGun.tscn")
+onready var shotgun = preload("res://weapons/Shotgun.tscn")
 onready var turret = preload("res://actors/Turret.tscn")
 
 var money: int = 0;
@@ -47,39 +46,32 @@ func _unhandled_input(event):
 		try_buy()
 
 func try_buy():
-	for buy_option in BuyOptions:
-		try_buy_option(BuyOptions[buy_option])
+	var debug_buy_all = false
+	if debug_buy_all:
+		for buy_option in BuyOptions:
+			try_buy_option(BuyOptions[buy_option])
+		# TODO: Remove return
+		return
 	
-	# TODO: Remove return
-	return
 	# This function is just a test function
-	var cost: int = 2
-	if money >= cost:
-		money -= cost
-		
-		# TODO: Change to menu option
-		match times_bought:
-			0:
-				print_bought_packed_scene(submachinegun)
-				emit_signal("bought_weapon", submachinegun)
-			1:
-				print_bought_packed_scene(shotgun)
-				emit_signal("bought_weapon", shotgun)
-			2:
-				print_bought_packed_scene(turret)
-				emit_signal("bought_turret", turret)
-			3:
-				print_bought_packed_scene(turret)
-				emit_signal("bought_turret", turret)
-			_:
-				var team_members_to_buy = 1
-				print("Bought: ", team_members_to_buy, " team member(s)")
-				emit_signal("bought_team_members", team_members_to_buy)
-		times_bought += 1
-	else:
-		print("Not enough")
 
-func try_buy_option(option: int):
+	var purchase_sucessful = false
+	# TODO: Change to menu option
+	match times_bought:
+		0:
+			purchase_sucessful = try_buy_option(BuyOptions.SUBMACHINEGUN)
+		1:
+			purchase_sucessful = try_buy_option(BuyOptions.SHOTGUN)
+		2:
+			purchase_sucessful = try_buy_option(BuyOptions.TURRET1)
+		3:
+			purchase_sucessful = try_buy_option(BuyOptions.TURRET2)
+		_:
+			purchase_sucessful = try_buy_option(BuyOptions.TEAMMEMBER)
+	if purchase_sucessful:
+		times_bought += 1
+
+func try_buy_option(option: int) -> bool:
 	var cost: int = 20
 	var signal_to_emit: String = ""
 	# TODO: Don't like using a non-typed variable
@@ -109,7 +101,7 @@ func try_buy_option(option: int):
 				amount = 1
 			_:
 				print("Invalid buy option")
-				return
+				return false
 	# TODO: Remove test cost = 0
 	cost = 0
 	if money >= cost:
@@ -128,6 +120,11 @@ func try_buy_option(option: int):
 			print("Bought: ", amount, " ", signal_to_emit)
 		else:
 			printerr("Invalid buy option reached signal emitting stage")
+			return false
+		return true
+	else:
+		print("Not enough money to purchase: ", BuyOptions.keys()[option])
+		return false
 
 func print_bought_packed_scene(scene: PackedScene):
 	# Can't use get_filename on packed scene
