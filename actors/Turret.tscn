@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/tanks/Spritesheet/onlyObjects_default.png" type="Texture" id=1]
+[ext_resource path="res://weapons/TurretGun.tscn" type="PackedScene" id=2]
+
+[node name="Turret" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+rotation = -1.5708
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 215, 168, 43, 39 )
+
+[node name="TurretGun" parent="." instance=ExtResource( 2 )]
+position = Vector2( 10, 0 )
+scale = Vector2( 0.5, 0.5 )

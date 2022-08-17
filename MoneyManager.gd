@@ -15,6 +15,8 @@ var times_bought: int = 0
 
 func initialize(team_name: int):
 	team.team = team_name
+	for weapon in $WeaponContainer.get_children():
+		weapon.hide()
 
 func handle_bases_changed(bases):
 	number_of_team_bases = 1

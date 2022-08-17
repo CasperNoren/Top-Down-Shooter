@@ -19,5 +19,6 @@ autostart = true
 visible = false
 
 [node name="SubmachineGun" parent="WeaponContainer" instance=ExtResource( 4 )]
+visible = false
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
