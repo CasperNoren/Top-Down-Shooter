@@ -18,15 +18,15 @@ onready var submachinegun = preload("res://weapons/SubmachineGun.tscn")
 onready var shotgun = preload("res://weapons/Shotgun.tscn")
 onready var turret = preload("res://actors/Turret.tscn")
 
+export (bool) var debug_buy_all = false
+
 var money: int = 0;
 var number_of_team_bases: int = 1
-# TODO: Remove, this is a test variable to use before a menu can choose what to buy
+# TODO: Remove, this is a test variable to use before a menu can be used to choose what to buy
 var times_bought: int = 0
 
 func initialize(team_name: int):
 	team.team = team_name
-	#for weapon in $WeaponContainer.get_children():
-		#weapon.hide()
 
 func handle_bases_changed(bases):
 	number_of_team_bases = 1
@@ -46,17 +46,14 @@ func _unhandled_input(event):
 		try_buy()
 
 func try_buy():
-	var debug_buy_all = false
+	# This function is just a test function
+	# Debug: also sets costs to zero
 	if debug_buy_all:
 		for buy_option in BuyOptions:
 			try_buy_option(BuyOptions[buy_option])
-		# TODO: Remove return
 		return
 	
-	# This function is just a test function
-
 	var purchase_sucessful = false
-	# TODO: Change to menu option
 	match times_bought:
 		0:
 			purchase_sucessful = try_buy_option(BuyOptions.SUBMACHINEGUN)
@@ -67,16 +64,16 @@ func try_buy():
 		3:
 			purchase_sucessful = try_buy_option(BuyOptions.TURRET2)
 		_:
-			purchase_sucessful = try_buy_option(BuyOptions.TEAMMEMBER)
+			purchase_sucessful = try_buy_option(BuyOptions.TEAMMEMBER, 2)
 	if purchase_sucessful:
 		times_bought += 1
 
-func try_buy_option(option: int) -> bool:
+func try_buy_option(option: int, amount: int = -1) -> bool:
+	# amount: int -1 functions as null here
 	var cost: int = 20
 	var signal_to_emit: String = ""
 	# TODO: Don't like using a non-typed variable
 	var packed_scene: PackedScene = null
-	var amount: int = -1
 	
 	match option:
 			BuyOptions.SUBMACHINEGUN:
@@ -98,10 +95,12 @@ func try_buy_option(option: int) -> bool:
 			BuyOptions.TEAMMEMBER:
 				cost = 1
 				signal_to_emit = "bought_team_members"
-				amount = 1
 			_:
 				print("Invalid buy option")
 				return false
+	
+	if debug_buy_all:
+		cost = 0
 	# TODO: Remove test cost = 0
 	cost = 0
 	if money >= cost:
