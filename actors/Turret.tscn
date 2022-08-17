@@ -1,9 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/tanks/Spritesheet/onlyObjects_default.png" type="Texture" id=1]
 [ext_resource path="res://weapons/TurretGun.tscn" type="PackedScene" id=2]
+[ext_resource path="res://actors/Turret.gd" type="Script" id=3]
+[ext_resource path="res://Team.tscn" type="PackedScene" id=4]
+[ext_resource path="res://actors/WeaponManager.tscn" type="PackedScene" id=5]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 270.046
 
 [node name="Turret" type="Node2D"]
+script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 rotation = -1.5708
@@ -11,6 +18,18 @@ texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 215, 168, 43, 39 )
 
-[node name="TurretGun" parent="." instance=ExtResource( 2 )]
-position = Vector2( 10, 0 )
+[node name="WeaponManager" parent="." instance=ExtResource( 5 )]
+
+[node name="TurretGun" parent="WeaponManager" instance=ExtResource( 2 )]
+position = Vector2( -15, -12 )
 scale = Vector2( 0.5, 0.5 )
+
+[node name="DetectionZone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone"]
+shape = SubResource( 1 )
+
+[node name="Team" parent="." instance=ExtResource( 4 )]
+
+[connection signal="body_entered" from="DetectionZone" to="." method="_on_DetectionZone_body_entered"]
+[connection signal="body_exited" from="DetectionZone" to="." method="_on_DetectionZone_body_exited"]

@@ -683,6 +683,8 @@ position = Vector2( 2514, 376 )
 position = Vector2( 2413, 462 )
 
 [node name="Turret" parent="." instance=ExtResource( 14 )]
+position = Vector2( 913, 258 )
+team_name = 2
 
 [node name="PathFinding" parent="." instance=ExtResource( 10 )]
 
