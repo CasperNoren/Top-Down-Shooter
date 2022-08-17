@@ -19,6 +19,7 @@ onready var shotgun = preload("res://weapons/Shotgun.tscn")
 onready var turret = preload("res://actors/Turret.tscn")
 
 export (bool) var debug_buy_all = false
+export (bool) var debug_zero_cost = false
 
 var money: int = 0;
 var number_of_team_bases: int = 1
@@ -93,16 +94,19 @@ func try_buy_option(option: int, amount: int = -1) -> bool:
 				signal_to_emit = "bought_turret"
 				packed_scene = turret
 			BuyOptions.TEAMMEMBER:
-				cost = 1
+				# Should always show the amount, null will count as 1
+				if amount == -1:
+					amount = 1
+				cost = 1 * amount
 				signal_to_emit = "bought_team_members"
 			_:
 				print("Invalid buy option")
 				return false
 	
-	if debug_buy_all:
+	# debug_buy_all needs the cost to be zero to purchase everything sucessfully
+	if debug_zero_cost or debug_buy_all:
 		cost = 0
-	# TODO: Remove test cost = 0
-	cost = 0
+		
 	if money >= cost:
 		money -= cost
 		
