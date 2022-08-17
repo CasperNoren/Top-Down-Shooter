@@ -4,8 +4,17 @@ signal bought_weapon(weapon)
 signal bought_team_members(amount)
 signal bought_turret(turret)
 
+# TODO: Add use
+enum BuyOptions {
+	SUBMACHINEGUN,
+	SHOTGUN,
+	TURRET1,
+	TURRET2,
+	TEAMMEMBER
+}
+
 onready var team = $Team
-# TODO: Should probably have an array of all scenes that can be bought
+# TODO: Should probably have an array or enum of all scenes that can be bought
 onready var shotgun = preload("res://weapons/Shotgun.tscn")
 onready var submachinegun = preload("res://weapons/SubmachineGun.tscn")
 onready var turret = preload("res://actors/Turret.tscn")
