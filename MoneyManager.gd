@@ -47,6 +47,11 @@ func _unhandled_input(event):
 		try_buy()
 
 func try_buy():
+	for buy_option in BuyOptions:
+		try_buy_option(BuyOptions[buy_option])
+	
+	# TODO: Remove return
+	return
 	# This function is just a test function
 	var cost: int = 2
 	if money >= cost:
@@ -73,6 +78,49 @@ func try_buy():
 		times_bought += 1
 	else:
 		print("Not enough")
+
+func try_buy_option(option: int):
+	var cost: int = 0
+	var signal_to_emit: String = ""
+	var packed_scene_or_amount = null
+	# Packed scene is seen as the default in this function
+	var is_packed_scene = true
+	match option:
+			BuyOptions.SUBMACHINEGUN:
+				cost = 1
+				signal_to_emit = "bought_weapon"
+				packed_scene_or_amount = submachinegun
+			BuyOptions.SHOTGUN:
+				cost = 2
+				signal_to_emit = "bought_weapon"
+				packed_scene_or_amount = shotgun
+			BuyOptions.TURRET1:
+				cost = 3
+				signal_to_emit = "bought_turret"
+				packed_scene_or_amount = turret
+			BuyOptions.TURRET2:
+				cost = 3
+				signal_to_emit = "bought_turret"
+				packed_scene_or_amount = turret
+			BuyOptions.TEAMMEMBER:
+				cost = 1
+				signal_to_emit = "bought_team_members"
+				packed_scene_or_amount = 1
+				is_packed_scene = false
+			_:
+				print("Invalid buy option")
+				return
+	# TODO: Remove test cost = 0
+	cost = 0
+	if money >= cost:
+		money -= cost
+		emit_signal(signal_to_emit, packed_scene_or_amount)
+		
+		# TODO: Change to typeof or get_type
+		if is_packed_scene:
+			print_bought_packed_scene(packed_scene_or_amount)
+		else: 
+			print("Bought: ", packed_scene_or_amount, " ", signal_to_emit)
 
 func print_bought_packed_scene(scene: PackedScene):
 	# Can't use get_filename on packed scene
