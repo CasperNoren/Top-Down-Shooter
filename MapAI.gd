@@ -133,7 +133,7 @@ func _on_RespawnTimer_timeout():
 	if unit_container.get_children().size() < max_units_alive:
 		respawn_timer.start()
 
-func add_weapon_to_team(weapon):
+func add_weapon_to_team(weapon: PackedScene):
 	# Don't want duplicates
 	if bought_weapons_array.has(weapon):
 		return
@@ -148,7 +148,7 @@ func add_team_members(amount: int):
 	if respawn_timer.is_stopped() and unit_container.get_children().size() < max_units_alive:
 		respawn_timer.start()
 
-func add_turret(turret):
+func add_turret(turret: PackedScene):
 	for turret_spot in turret_spots:
 		# Search for free turret spot
 		# If the spot has a child that means it's already in use
