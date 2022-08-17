@@ -113,7 +113,6 @@ func try_buy_option(option: int, amount: int = -1) -> bool:
 		if packed_scene != null and amount != -1:
 			# TODO: Currently not used for any option, no signal exists currrently
 			emit_signal(signal_to_emit, packed_scene, amount)
-			# TODO: Add print for amount
 		elif packed_scene != null:
 			emit_signal(signal_to_emit, packed_scene)
 		elif amount != -1:
@@ -124,12 +123,15 @@ func try_buy_option(option: int, amount: int = -1) -> bool:
 		print_bought_option(option, amount)
 		return true
 	else:
-		print("Not enough money to purchase: ", BuyOptions.keys()[option])
+		print_bought_option(option, amount, false)
 		return false
 
-func print_bought_option(option: int, amount: int):
+func print_bought_option(option: int, amount: int, purchase_sucessful: bool = true):
 	# -1 counts as null here
+	var purchasing_message: String = "Bought: "
+	if not purchase_sucessful:
+		purchasing_message = "Not enought money to buy: "
 	if amount == -1:
-		print("Bought: ", BuyOptions.keys()[option])
+		print(purchasing_message, BuyOptions.keys()[option])
 	else:
-		print("Bought: ", amount, " ", BuyOptions.keys()[option])
+		print(purchasing_message, amount, " ", BuyOptions.keys()[option])
