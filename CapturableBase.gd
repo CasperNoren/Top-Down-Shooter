@@ -72,7 +72,13 @@ func check_wheter_base_can_be_captured():
 		team_to_capture = team.TeamName.NEUTRAL
 		capture_timer.stop()
 	else:
-		#print("New team has majority, starting clock. New team: ", majority_team)
+		# If it's the same team as last time the function was called ...
+		# ... and if the timer isn't stopped
+		if majority_team == team_to_capture and capture_timer.time_left > 0:
+			# If it's the same team as last time we don't want the timer to start over
+			print("Team to capture number changed. Doing nothing to the clock")
+			return
+		print("New team has majority, starting clock. New team: ", majority_team)
 		team_to_capture = majority_team
 		capture_timer.start()
 
