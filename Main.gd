@@ -3,6 +3,7 @@ extends Node2D
 const Player = preload("res://actors/Player.tscn")
 const GameOverScreen = preload("res://ui/GameOverScreen.tscn")
 const PauseScreen = preload("res://ui/PauseScreen.tscn")
+const BuyScreen = preload("res://ui/BuyScreen.tscn")
 
 onready var player_respawn_timer = $PlayerRespawnTimer
 onready var capturable_base_manager = $CapturableBaseManager
@@ -22,6 +23,7 @@ onready var pathfinding = $PathFinding
 func _ready() -> void:
 	randomize()
 	GlobalSignals.connect("bullet_fired", bullet_manager, "handle_bullet_spawned")
+	GlobalSignals.connect("buy_option_pressed", ally_ai.money_manager, "handle_buy_button_pressed")
 	
 	var ally_respawns = $AllyRespawnPoints
 	var enemy_respawns = $EnemyRespawnPoints
@@ -80,6 +82,9 @@ func _unhandled_input(event):
 	if event.is_action_pressed("pause"):
 		var pause_menu = PauseScreen.instance()
 		add_child(pause_menu)
+	elif event.is_action_pressed("buy"):
+		var buy_screen = BuyScreen.instance()
+		add_child(buy_screen)
 
 
 func _on_PlayerRespawnTimer_timeout():

@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name MoneyManager
+
 signal bought_weapon(weapon)
 signal bought_team_members(amount)
 signal bought_turret(turret)
@@ -43,8 +45,17 @@ func _on_Timer_timeout():
 
 func _unhandled_input(event):
 	# Both sides share this scene but controls should only work for the player side
+	# TODO: Remove, testing
+	return
 	if team.team == Team.TeamName.PLAYER and event.is_action_released("buy"):
 		try_buy()
+
+func handle_buy_button_pressed(option: int):
+	print(BuyOptions.keys()[option], " buying reached money manager")
+	if option == BuyOptions.TEAMMEMBER:
+		try_buy_option(option, 2)
+	else:
+		try_buy_option(option)
 
 func try_buy():
 	# This function is just a test function

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ui/ButtonBuyOption.gd" type="Script" id=1]
+[ext_resource path="res://ui/roboto_mono_36.tres" type="DynamicFont" id=2]
+
+[node name="ButtonBuyOption" type="Button"]
+margin_right = 122.0
+margin_bottom = 54.0
+custom_fonts/font = ExtResource( 2 )
+text = "test1"
+script = ExtResource( 1 )
