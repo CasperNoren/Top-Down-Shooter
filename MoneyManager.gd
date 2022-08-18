@@ -28,6 +28,7 @@ var number_of_team_bases: int = 1
 # TODO: Remove, this is a test variable to use before a menu can be used to choose what to buy
 var times_bought: int = 0
 var removed_options: Array = []
+var options_to_not_remove: Array = [BuyOptions.TEAMMEMBER]
 
 func initialize(team_name: int):
 	team.team = team_name
@@ -52,7 +53,7 @@ func _unhandled_input(event):
 		try_buy()
 
 func handle_buy_button_pressed(option: int):
-	#print(BuyOptions.keys()[option], " buying reached money manager")
+	#print(BuyOptions.keys()[option], " buy button reached money manager")
 	var purchase_successful = false
 	if option == BuyOptions.TEAMMEMBER:
 		purchase_successful = try_buy_option(option, 2)
@@ -61,7 +62,8 @@ func handle_buy_button_pressed(option: int):
 	
 	if purchase_successful:
 		GlobalSignals.emit_signal("purchase_was_success", option)
-		if option != BuyOptions.TEAMMEMBER:
+		# -1 means that the option is not in the list
+		if options_to_not_remove.find(option) == -1:
 			removed_options.append(option)
 
 func try_buy():

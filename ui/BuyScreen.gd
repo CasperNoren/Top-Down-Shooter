@@ -8,10 +8,12 @@ export (bool) var debug_show_prints = false
 # Otherwise it closes down instantly
 var has_been_released: bool = false
 var options: Array = []
+var options_to_not_remove: Array = []
 
 func _ready():
 	get_tree().paused = true
 	
+	# TODO: Make it so options start a new row if there are too many
 	for buy_option in MoneyManager.BuyOptions:
 		var option = button_buy_option.instance()
 		option_columns.add_child(option)
@@ -55,7 +57,15 @@ func remove_multiple_options(options_to_remove: Array):
 		remove_option(option)
 
 func handle_purchase_was_success(option: int):
-	# Team member option shouldn't disappear
-	if option == MoneyManager.BuyOptions.TEAMMEMBER:
+	# Not being -1 means that it is in the list of things not to remove
+	if options_to_not_remove.find(option) != -1:
+		# Some options shouldn't disappear so they just return out right away
 		return
 	remove_option(option)
+
+func set_options_to_not_remove(options_to_not_remove: Array):
+	# Shouldn't be done in initialize because the list might change dynamically in the future ...
+	# ... like setting a limit for how many times something can be bought
+	self.options_to_not_remove = options_to_not_remove
+	if debug_show_prints:
+		print("Options to not remove: ", options_to_not_remove)
