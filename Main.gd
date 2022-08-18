@@ -84,7 +84,11 @@ func _unhandled_input(event):
 		add_child(pause_menu)
 	elif event.is_action_pressed("buy"):
 		var buy_screen = BuyScreen.instance()
+		GlobalSignals.connect("purchase_was_success", buy_screen, "handle_purchase_was_success")
+		#buy_screen.remove_multiple_options(ally_ai.money_manager.removed_options)
+		#buy_screen.initialize(ally_ai.money_manager.removed_options)
 		add_child(buy_screen)
+		buy_screen.remove_multiple_options(ally_ai.money_manager.removed_options)
 
 
 func _on_PlayerRespawnTimer_timeout():

@@ -27,6 +27,7 @@ var money: int = 0;
 var number_of_team_bases: int = 1
 # TODO: Remove, this is a test variable to use before a menu can be used to choose what to buy
 var times_bought: int = 0
+var removed_options: Array = []
 
 func initialize(team_name: int):
 	team.team = team_name
@@ -51,11 +52,17 @@ func _unhandled_input(event):
 		try_buy()
 
 func handle_buy_button_pressed(option: int):
-	print(BuyOptions.keys()[option], " buying reached money manager")
+	#print(BuyOptions.keys()[option], " buying reached money manager")
+	var purchase_successful = false
 	if option == BuyOptions.TEAMMEMBER:
-		try_buy_option(option, 2)
+		purchase_successful = try_buy_option(option, 2)
 	else:
-		try_buy_option(option)
+		purchase_successful = try_buy_option(option)
+	
+	if purchase_successful:
+		GlobalSignals.emit_signal("purchase_was_success", option)
+		if option != BuyOptions.TEAMMEMBER:
+			removed_options.append(option)
 
 func try_buy():
 	# This function is just a test function
@@ -65,19 +72,19 @@ func try_buy():
 			try_buy_option(BuyOptions[buy_option])
 		return
 	
-	var purchase_sucessful = false
+	var purchase_successful = false
 	match times_bought:
 		0:
-			purchase_sucessful = try_buy_option(BuyOptions.SUBMACHINEGUN)
+			purchase_successful = try_buy_option(BuyOptions.SUBMACHINEGUN)
 		1:
-			purchase_sucessful = try_buy_option(BuyOptions.SHOTGUN)
+			purchase_successful = try_buy_option(BuyOptions.SHOTGUN)
 		2:
-			purchase_sucessful = try_buy_option(BuyOptions.TURRET1)
+			purchase_successful = try_buy_option(BuyOptions.TURRET1)
 		3:
-			purchase_sucessful = try_buy_option(BuyOptions.TURRET2)
+			purchase_successful = try_buy_option(BuyOptions.TURRET2)
 		_:
-			purchase_sucessful = try_buy_option(BuyOptions.TEAMMEMBER, 2)
-	if purchase_sucessful:
+			purchase_successful = try_buy_option(BuyOptions.TEAMMEMBER, 2)
+	if purchase_successful:
 		times_bought += 1
 
 func try_buy_option(option: int, amount: int = -1) -> bool:
@@ -137,10 +144,10 @@ func try_buy_option(option: int, amount: int = -1) -> bool:
 		print_bought_option(option, amount, false)
 		return false
 
-func print_bought_option(option: int, amount: int, purchase_sucessful: bool = true):
+func print_bought_option(option: int, amount: int, purchase_successful: bool = true):
 	# -1 counts as null here
 	var purchasing_message: String = "Bought: "
-	if not purchase_sucessful:
+	if not purchase_successful:
 		purchasing_message = "Not enought money to buy: "
 	if amount == -1:
 		print(purchasing_message, BuyOptions.keys()[option])
