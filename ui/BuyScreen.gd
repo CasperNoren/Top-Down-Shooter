@@ -3,25 +3,20 @@ extends CanvasLayer
 onready var option_columns = $PauseMenuContainer/PanelContainer/MarginContainer/Rows/OptionColumns
 onready var button_buy_option = preload("res://ui/ButtonBuyOption.tscn")
 
+export (bool) var debug_show_prints = false
+
 # Otherwise it closes down instantly
 var has_been_released: bool = false
 var options: Array = []
-var removed_options: Array = []
 
 func _ready():
 	get_tree().paused = true
 	
 	for buy_option in MoneyManager.BuyOptions:
-		print(removed_options.find(buy_option))
-		if removed_options.find(buy_option) == -1:
-			var option = button_buy_option.instance()
-			option_columns.add_child(option)
-			print(buy_option)
-			option.initialize(MoneyManager.BuyOptions[buy_option])
-			options.append(option)
-
-func initialize(removed_options: Array):
-	self.removed_options = removed_options
+		var option = button_buy_option.instance()
+		option_columns.add_child(option)
+		option.initialize(MoneyManager.BuyOptions[buy_option])
+		options.append(option)
 
 func _on_ContinueButton_pressed():
 	handle_continue()
@@ -40,16 +35,19 @@ func handle_continue():
 	queue_free()
 
 func remove_option(option: int):
-	#print("Remove option: ", option, " | also known as: ", MoneyManager.BuyOptions.keys()[option])
+	if debug_show_prints:
+		print("Remove option: ", option, " | also known as: ", MoneyManager.BuyOptions.keys()[option])
 	# Can't use find() because we look for the variable it has, not the button itself
 	for option_button in options:
 		# The for loop could go over a freed button
 		if is_instance_valid(option_button):
 			if option_button.option == option:
-				#print(MoneyManager.BuyOptions.keys()[option], " option removed")
+				if debug_show_prints:
+					print(MoneyManager.BuyOptions.keys()[option], " option removed")
 				option_button.queue_free()
 				# No reason to keep going after option has been found
 				return
+	# Should never happened therefore shown even without debug_show_prints 
 	print("BuyScreen tried to remove option that does not exist")
 
 func remove_multiple_options(options_to_remove: Array):

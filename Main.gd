@@ -85,9 +85,8 @@ func _unhandled_input(event):
 	elif event.is_action_pressed("buy"):
 		var buy_screen = BuyScreen.instance()
 		GlobalSignals.connect("purchase_was_success", buy_screen, "handle_purchase_was_success")
-		#buy_screen.remove_multiple_options(ally_ai.money_manager.removed_options)
-		#buy_screen.initialize(ally_ai.money_manager.removed_options)
 		add_child(buy_screen)
+		# Needs to be after it's added as a scene otherwise _ready() and onready vars won't already have run
 		buy_screen.remove_multiple_options(ally_ai.money_manager.removed_options)
 
 
