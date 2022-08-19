@@ -36,16 +36,16 @@ func handle_continue():
 	get_tree().paused = false
 	queue_free()
 
-func remove_option(option: int):
+func remove_option(option: BuyableOption):
 	if debug_show_prints:
-		print("Remove option: ", option, " | also known as: ", MoneyManager.BuyOptions.keys()[option])
+		print("Remove option: ", option.shop_name)
 	# Can't use find() because we look for the variable it has, not the button itself
 	for option_button in options:
 		# The for loop could go over a freed button
 		if is_instance_valid(option_button):
 			if option_button.option == option:
 				if debug_show_prints:
-					print(MoneyManager.BuyOptions.keys()[option], " option removed")
+					print(option.shop_name, " option removed")
 				option_button.queue_free()
 				# No reason to keep going after option has been found
 				return
@@ -56,7 +56,7 @@ func remove_multiple_options(options_to_remove: Array):
 	for option in options_to_remove:
 		remove_option(option)
 
-func handle_purchase_was_success(option: int):
+func handle_purchase_was_success(option: BuyableOption):
 	# Not being -1 means that it is in the list of things not to remove
 	if options_to_not_remove.find(option) != -1:
 		# Some options shouldn't disappear so they just return out right away

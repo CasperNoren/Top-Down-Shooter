@@ -6,7 +6,6 @@ signal bought_weapon(weapon)
 signal bought_team_members(amount)
 signal bought_turret(turret)
 
-# TODO: Add use
 enum BuyOptions {
 	SUBMACHINEGUN,
 	SHOTGUN,
