@@ -6,7 +6,6 @@ signal bought_weapon(weapon)
 signal bought_team_members(amount)
 signal bought_turret(turret)
 
-# TODO: Add use
 enum BuyOptions {
 	SUBMACHINEGUN,
 	SHOTGUN,
@@ -16,6 +15,7 @@ enum BuyOptions {
 }
 
 onready var team = $Team 
+onready var buyable_options_container = $BuyableOptionsContainer
 onready var submachinegun = preload("res://weapons/SubmachineGun.tscn")
 onready var shotgun = preload("res://weapons/Shotgun.tscn")
 onready var turret = preload("res://actors/Turret.tscn")
@@ -27,11 +27,16 @@ var money: int = 0;
 var number_of_team_bases: int = 1
 # TODO: Remove, this is a test variable to use before a menu can be used to choose what to buy
 var times_bought: int = 0
+var options: Array = []
 var removed_options: Array = []
-var options_to_not_remove: Array = [BuyOptions.TEAMMEMBER]
+var options_to_not_remove: Array = []
 
 func initialize(team_name: int):
 	team.team = team_name
+	for buyable_option in buyable_options_container.get_children():
+		options.append(buyable_option)
+		if buyable_option.should_not_be_removed:
+			options_to_not_remove.append(buyable_option)
 
 func handle_bases_changed(bases):
 	number_of_team_bases = 1
@@ -52,10 +57,11 @@ func _unhandled_input(event):
 	if team.team == Team.TeamName.PLAYER and event.is_action_released("buy"):
 		try_buy()
 
-func handle_buy_button_pressed(option: int):
+func handle_buy_button_pressed(option: BuyableOption):
 	#print(BuyOptions.keys()[option], " buy button reached money manager")
 	var purchase_successful = false
-	if option == BuyOptions.TEAMMEMBER:
+	# TODO: this shouldn't be done:
+	if option.shop_name == "Team Member(s)":
 		purchase_successful = try_buy_option(option, 2)
 	else:
 		purchase_successful = try_buy_option(option)
@@ -70,58 +76,37 @@ func try_buy():
 	# This function is just a test function
 	# Debug: also sets costs to zero
 	if debug_buy_all:
-		for buy_option in BuyOptions:
-			try_buy_option(BuyOptions[buy_option])
+		for option in options:
+			try_buy_option(option)
 		return
 	
 	var purchase_successful = false
+	# TODO these are not updated:
+	return
 	match times_bought:
 		0:
-			purchase_successful = try_buy_option(BuyOptions.SUBMACHINEGUN)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.SUBMACHINEGUN)
 		1:
-			purchase_successful = try_buy_option(BuyOptions.SHOTGUN)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.SHOTGUN)
 		2:
-			purchase_successful = try_buy_option(BuyOptions.TURRET1)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.TURRET1)
 		3:
-			purchase_successful = try_buy_option(BuyOptions.TURRET2)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.TURRET2)
 		_:
-			purchase_successful = try_buy_option(BuyOptions.TEAMMEMBER, 2)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.TEAMMEMBER, 2)
 	if purchase_successful:
 		times_bought += 1
 
-func try_buy_option(option: int, amount: int = -1) -> bool:
+func try_buy_option(option: BuyableOption, amount: int = -1) -> bool:
 	# amount: int -1 functions as null here
-	var cost: int = 20
-	var signal_to_emit: String = ""
-	# TODO: Don't like using a non-typed variable
-	var packed_scene: PackedScene = null
-	
-	match option:
-			BuyOptions.SUBMACHINEGUN:
-				cost = 1
-				signal_to_emit = "bought_weapon"
-				packed_scene = submachinegun
-			BuyOptions.SHOTGUN:
-				cost = 2
-				signal_to_emit = "bought_weapon"
-				packed_scene = shotgun
-			BuyOptions.TURRET1:
-				cost = 3
-				signal_to_emit = "bought_turret"
-				packed_scene = turret
-			BuyOptions.TURRET2:
-				cost = 3
-				signal_to_emit = "bought_turret"
-				packed_scene = turret
-			BuyOptions.TEAMMEMBER:
-				# Should always show the amount, null will count as 1
-				if amount == -1:
-					amount = 1
-				cost = 1 * amount
-				signal_to_emit = "bought_team_members"
-			_:
-				print("Invalid buy option")
-				return false
+	var cost: int = option.cost
+	var signal_to_emit: String = option.signal_to_emit
+	var packed_scene: PackedScene = option.item_scene
 	
 	# debug_buy_all needs the cost to be zero to purchase everything sucessfully
 	if debug_zero_cost or debug_buy_all:
@@ -130,13 +115,17 @@ func try_buy_option(option: int, amount: int = -1) -> bool:
 	if money >= cost:
 		money -= cost
 		
-		if packed_scene != null and amount != -1:
+		if packed_scene == null:
+			# Should always show the amount, null (-1) will count as 1
+			if amount == -1:
+				amount = 1
+			emit_signal(signal_to_emit, amount)
+		elif packed_scene != null and amount != -1:
 			# TODO: Currently not used for any option, no signal exists currrently
+			print("Error: MoneyManager tried to buy packed scene with amount (does not exist)")
 			emit_signal(signal_to_emit, packed_scene, amount)
 		elif packed_scene != null:
 			emit_signal(signal_to_emit, packed_scene)
-		elif amount != -1:
-			emit_signal(signal_to_emit, amount)
 		else:
 			printerr("Invalid buy option reached signal emitting stage")
 			return false
@@ -146,12 +135,12 @@ func try_buy_option(option: int, amount: int = -1) -> bool:
 		print_bought_option(option, amount, false)
 		return false
 
-func print_bought_option(option: int, amount: int, purchase_successful: bool = true):
+func print_bought_option(option: BuyableOption, amount: int, purchase_successful: bool = true):
 	# -1 counts as null here
 	var purchasing_message: String = "Bought: "
 	if not purchase_successful:
 		purchasing_message = "Not enought money to buy: "
 	if amount == -1:
-		print(purchasing_message, BuyOptions.keys()[option])
+		print(purchasing_message, option.shop_name)
 	else:
-		print(purchasing_message, amount, " ", BuyOptions.keys()[option])
+		print(purchasing_message, amount, " ", option.shop_name)

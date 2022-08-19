@@ -1,11 +1,11 @@
 extends Button
 
-var option: int = -1
+var option: BuyableOption = null
 
-func initialize(option: int):
+func initialize(option: BuyableOption):
 	self.option = option
-	text = str(MoneyManager.BuyOptions.keys()[option])
+	text = option.shop_name
 
 func _pressed():
-	print(MoneyManager.BuyOptions.keys()[option], " buy button pressed")
+	print(option.shop_name, " buy button pressed")
 	GlobalSignals.emit_signal("buy_option_pressed", option)

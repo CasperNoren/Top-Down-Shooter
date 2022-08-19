@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://MoneyManager.gd" type="Script" id=1]
 [ext_resource path="res://Team.tscn" type="PackedScene" id=2]
+[ext_resource path="res://BuyableOption.tscn" type="PackedScene" id=3]
+[ext_resource path="res://actors/Turret.tscn" type="PackedScene" id=4]
+[ext_resource path="res://weapons/Shotgun.tscn" type="PackedScene" id=5]
+[ext_resource path="res://weapons/SubmachineGun.tscn" type="PackedScene" id=6]
 
 [node name="MoneyManager" type="Node2D"]
 script = ExtResource( 1 )
@@ -10,5 +14,37 @@ script = ExtResource( 1 )
 autostart = true
 
 [node name="Team" parent="." instance=ExtResource( 2 )]
+
+[node name="BuyableOptionsContainer" type="Node2D" parent="."]
+
+[node name="OptionSubmachineGun" parent="BuyableOptionsContainer" instance=ExtResource( 3 )]
+item_scene = ExtResource( 6 )
+signal_to_emit = "bought_weapon"
+shop_name = "Submachine Gun"
+cost = 1
+
+[node name="OptionShotgun" parent="BuyableOptionsContainer" instance=ExtResource( 3 )]
+item_scene = ExtResource( 5 )
+signal_to_emit = "bought_weapon"
+shop_name = "Shotgun"
+cost = 2
+
+[node name="OptionTurret1" parent="BuyableOptionsContainer" instance=ExtResource( 3 )]
+item_scene = ExtResource( 4 )
+signal_to_emit = "bought_turret"
+shop_name = "Turret-1"
+cost = 3
+
+[node name="OptionTurret2" parent="BuyableOptionsContainer" instance=ExtResource( 3 )]
+item_scene = ExtResource( 4 )
+signal_to_emit = "bought_turret"
+shop_name = "Turret-2"
+cost = 3
+
+[node name="OptionTeamMember" parent="BuyableOptionsContainer" instance=ExtResource( 3 )]
+signal_to_emit = "bought_team_members"
+shop_name = "Team Member(s)"
+cost = 1
+should_not_be_removed = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
