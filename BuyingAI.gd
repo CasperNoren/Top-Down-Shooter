@@ -15,8 +15,18 @@ var available_options: Array = []
 var money: int = 0
 
 func choose_next_purchase():
-	if money <= 0:
+	print("BuyingAI: ", money)
+	if money <= 0 or available_options.size() <= 0:
 		return
+	var choosen_option: BuyableOption = null
+	# choose completely random option
+	choosen_option = available_options[randi() % available_options.size()]
+	
+	print("BuyingAI choose: ", choosen_option.shop_name)
+	#
+	# Doesn't seem to recieve signal
+	#
+	emit_signal("buying_ai_choose_option choosen", choosen_option)
 
 # Returns all options that aren't removed
 func set_available_options(all_options: Array, removed_options: Array) -> Array:

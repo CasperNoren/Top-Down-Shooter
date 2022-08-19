@@ -16,9 +16,9 @@ enum BuyOptions {
 	TEAMMEMBER
 }
 
-onready var team = $Team 
+onready var team: Team = $Team 
 onready var buyable_options_container = $BuyableOptionsContainer
-onready var buying_ai = $BuyingAI
+onready var buying_ai: BuyingAI = $BuyingAI
 # TODO: Remove these, first check so they aren't used anymore
 onready var submachinegun = preload("res://weapons/SubmachineGun.tscn")
 onready var shotgun = preload("res://weapons/Shotgun.tscn")
@@ -41,6 +41,11 @@ func initialize(team_name: int):
 		options.append(buyable_option)
 		if buyable_option.should_not_be_removed:
 			options_to_not_remove.append(buyable_option)
+	
+	buying_ai.connect("buying_ai_choose_option", self, "try_buy_option")
+	if team.team != Team.TeamName.PLAYER:
+		# First call since no options should have been removed yet
+		buying_ai.set_available_options(options, removed_options)
 
 func handle_bases_changed(bases):
 	number_of_team_bases = 1
@@ -49,8 +54,10 @@ func handle_bases_changed(bases):
 			number_of_team_bases += 1
 
 func _on_Timer_timeout():
+	if team.team != Team.TeamName.PLAYER:
+		buying_ai.choose_next_purchase()
 	# TODO: Add constant to multiply? 
-	money += number_of_team_bases
+	set_money(money + number_of_team_bases)
 	# TODO: Add money to GUI
 	print(str(team.team) + " money: " + str(money) + "| Number of bases: " + str(number_of_team_bases))
 	# It's for the GUI
@@ -110,6 +117,9 @@ func try_buy():
 		times_bought += 1
 
 func try_buy_option(option: BuyableOption, amount: int = -1) -> bool:
+	# TODO test remove
+	if team.team != Team.TeamName.PLAYER:
+		print("Enemy tried to buy: ", option.shop_name)
 	# amount: int -1 functions as null here
 	var cost: int = option.cost
 	var signal_to_emit: String = option.signal_to_emit
