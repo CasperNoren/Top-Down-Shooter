@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name BuyingAI
+
 signal buying_ai_choose_option(option)
 
 # Should have priorities like: 
@@ -12,7 +14,8 @@ var available_options: Array = []
 var money: int = 0
 
 func choose_next_purchase():
-	pass
+	if money <= 0:
+		return
 
 # TODO: Make moneymanager call this when removed_options has been updated
 # Returns all options that aren't removed

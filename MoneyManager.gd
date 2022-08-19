@@ -17,6 +17,8 @@ enum BuyOptions {
 
 onready var team = $Team 
 onready var buyable_options_container = $BuyableOptionsContainer
+onready var buying_ai = $BuyingAI
+# TODO: Remove these, first check so they aren't used anymore
 onready var submachinegun = preload("res://weapons/SubmachineGun.tscn")
 onready var shotgun = preload("res://weapons/Shotgun.tscn")
 onready var turret = preload("res://actors/Turret.tscn")
@@ -24,7 +26,7 @@ onready var turret = preload("res://actors/Turret.tscn")
 export (bool) var debug_buy_all = false
 export (bool) var debug_zero_cost = false
 
-var money: int = 0;
+var money: int = 0 setget set_money
 var number_of_team_bases: int = 1
 # TODO: Remove, this is a test variable to use before a menu can be used to choose what to buy
 var times_bought: int = 0
@@ -74,7 +76,7 @@ func handle_buy_button_pressed(option: BuyableOption):
 		GlobalSignals.emit_signal("purchase_was_success", option)
 		# -1 means that the option is not in the list
 		if options_to_not_remove.find(option) == -1:
-			removed_options.append(option)
+			add_removed_option(option)
 
 func try_buy():
 	# This function is just a test function
@@ -117,7 +119,7 @@ func try_buy_option(option: BuyableOption, amount: int = -1) -> bool:
 		cost = 0
 		
 	if money >= cost:
-		money -= cost
+		set_money(money - cost)
 		if team.team == Team.TeamName.PLAYER:
 			emit_signal("money_changed", money)
 		
@@ -150,3 +152,16 @@ func print_bought_option(option: BuyableOption, amount: int, purchase_successful
 		print(purchasing_message, option.shop_name)
 	else:
 		print(purchasing_message, amount, " ", option.shop_name)
+
+func set_money(new_value: int):
+	money = new_value
+	# Player doesn't need AI
+	if team.team != Team.TeamName.PLAYER:
+		buying_ai.set_money(money)
+
+# This is more or less a setter 
+func add_removed_option(option: BuyableOption):
+	removed_options.append(option)
+	# Player doesn't need AI
+	if team.team != Team.TeamName.PLAYER:
+		buying_ai.set_available_options(options, removed_options)
