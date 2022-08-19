@@ -128,12 +128,12 @@ func try_buy_option(option: BuyableOption, amount: int = -1) -> bool:
 		print_bought_option(option, amount, false)
 		return false
 
-func print_bought_option(option: int, amount: int, purchase_successful: bool = true):
+func print_bought_option(option: BuyableOption, amount: int, purchase_successful: bool = true):
 	# -1 counts as null here
 	var purchasing_message: String = "Bought: "
 	if not purchase_successful:
 		purchasing_message = "Not enought money to buy: "
 	if amount == -1:
-		print(purchasing_message, BuyOptions.keys()[option])
+		print(purchasing_message, option.shop_name)
 	else:
-		print(purchasing_message, amount, " ", BuyOptions.keys()[option])
+		print(purchasing_message, amount, " ", option.shop_name)
