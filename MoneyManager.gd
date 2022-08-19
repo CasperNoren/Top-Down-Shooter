@@ -81,17 +81,24 @@ func try_buy():
 		return
 	
 	var purchase_successful = false
+	# TODO these are not updated:
+	return
 	match times_bought:
 		0:
-			purchase_successful = try_buy_option(BuyOptions.SUBMACHINEGUN)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.SUBMACHINEGUN)
 		1:
-			purchase_successful = try_buy_option(BuyOptions.SHOTGUN)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.SHOTGUN)
 		2:
-			purchase_successful = try_buy_option(BuyOptions.TURRET1)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.TURRET1)
 		3:
-			purchase_successful = try_buy_option(BuyOptions.TURRET2)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.TURRET2)
 		_:
-			purchase_successful = try_buy_option(BuyOptions.TEAMMEMBER, 2)
+			pass
+			#purchase_successful = try_buy_option(BuyOptions.TEAMMEMBER, 2)
 	if purchase_successful:
 		times_bought += 1
 
