@@ -58,7 +58,7 @@ func _unhandled_input(event):
 	if team.team == Team.TeamName.PLAYER and event.is_action_released("buy"):
 		try_buy()
 
-func handle_buy_button_pressed(option: int):
+func handle_buy_button_pressed(option: BuyableOption):
 	#print(BuyOptions.keys()[option], " buy button reached money manager")
 	var purchase_successful = false
 	if option == BuyOptions.TEAMMEMBER:
