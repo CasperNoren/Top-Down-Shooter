@@ -1,7 +1,9 @@
 extends CanvasLayer
 
-onready var option_columns = $PauseMenuContainer/PanelContainer/MarginContainer/Rows/OptionColumns
+onready var option_columns_container = $PauseMenuContainer/PanelContainer/MarginContainer/Rows/OptionColumnsContainer
+onready var current_option_column = $PauseMenuContainer/PanelContainer/MarginContainer/Rows/OptionColumnsContainer/OptionColumns
 onready var button_buy_option = preload("res://ui/ButtonBuyOption.tscn")
+onready var option_column_scene = preload("res://ui/OptionColumns.tscn")
 
 export (bool) var debug_show_prints = false
 
@@ -9,6 +11,7 @@ export (bool) var debug_show_prints = false
 var has_been_released: bool = false
 var options: Array = []
 var options_to_not_remove: Array = []
+var max_options_per_row = 3
 
 func _ready():
 	get_tree().paused = true
@@ -17,7 +20,13 @@ func add_options(options_to_add: Array):
 	# TODO: Make it so options start a new row if there are too many
 	for buy_option in options_to_add:
 		var option = button_buy_option.instance()
-		option_columns.add_child(option)
+		
+		if current_option_column.get_children().size() >= max_options_per_row:
+			var new_column = option_column_scene.instance()
+			option_columns_container.add_child(new_column)
+			current_option_column = new_column
+		current_option_column.add_child(option)
+		
 		option.initialize(buy_option)
 		options.append(option)
 

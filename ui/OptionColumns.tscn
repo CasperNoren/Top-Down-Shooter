@@ -1,0 +1,4 @@
+[gd_scene format=2]
+
+[node name="OptionColumns" type="HBoxContainer"]
+margin_right = 188.0

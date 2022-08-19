@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ui/menu_style.tres" type="StyleBox" id=1]
 [ext_resource path="res://ui/roboto_mono_36.tres" type="DynamicFont" id=2]
 [ext_resource path="res://ui/BuyScreen.gd" type="Script" id=3]
+[ext_resource path="res://ui/OptionColumns.tscn" type="PackedScene" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.25098 )
@@ -64,9 +65,11 @@ margin_bottom = 146.0
 custom_fonts/font = ExtResource( 2 )
 text = "CONTINUE"
 
-[node name="OptionColumns" type="HBoxContainer" parent="PauseMenuContainer/PanelContainer/MarginContainer/Rows"]
+[node name="OptionColumnsContainer" type="VBoxContainer" parent="PauseMenuContainer/PanelContainer/MarginContainer/Rows"]
 margin_top = 166.0
 margin_right = 188.0
 margin_bottom = 166.0
+
+[node name="OptionColumns" parent="PauseMenuContainer/PanelContainer/MarginContainer/Rows/OptionColumnsContainer" instance=ExtResource( 4 )]
 
 [connection signal="pressed" from="PauseMenuContainer/PanelContainer/MarginContainer/Rows/ContinueButton" to="." method="_on_ContinueButton_pressed"]
