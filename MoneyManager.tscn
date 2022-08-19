@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://MoneyManager.gd" type="Script" id=1]
 [ext_resource path="res://Team.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://actors/Turret.tscn" type="PackedScene" id=4]
 [ext_resource path="res://weapons/Shotgun.tscn" type="PackedScene" id=5]
 [ext_resource path="res://weapons/SubmachineGun.tscn" type="PackedScene" id=6]
+[ext_resource path="res://BuyingAI.gd" type="Script" id=7]
 
 [node name="MoneyManager" type="Node2D"]
 script = ExtResource( 1 )
@@ -46,5 +47,8 @@ signal_to_emit = "bought_team_members"
 shop_name = "Team Member(s)"
 cost = 1
 should_not_be_removed = true
+
+[node name="BuyingAI" type="Node2D" parent="."]
+script = ExtResource( 7 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
