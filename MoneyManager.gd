@@ -152,7 +152,11 @@ func print_bought_option(option: BuyableOption, amount: int, purchase_successful
 	if amount == -1:
 		print(purchasing_message, option.shop_name)
 	else:
-		print(purchasing_message, amount, " ", option.shop_name)
+		# Dynamically add "s" to the end of the shop_name if buying multiple
+		if amount > 1:
+			print(purchasing_message, amount, " ", option.shop_name, "s")
+		else:
+			print(purchasing_message, amount, " ", option.shop_name)
 
 func set_money(new_value: int):
 	money = new_value
