@@ -30,7 +30,7 @@ var number_of_team_bases: int = 1
 var times_bought: int = 0
 var options: Array = []
 var removed_options: Array = []
-var options_to_not_remove: Array = [BuyOptions.TEAMMEMBER]
+var options_to_not_remove: Array = []
 
 func initialize(team_name: int):
 	team.team = team_name
@@ -61,7 +61,8 @@ func _unhandled_input(event):
 func handle_buy_button_pressed(option: BuyableOption):
 	#print(BuyOptions.keys()[option], " buy button reached money manager")
 	var purchase_successful = false
-	if option == BuyOptions.TEAMMEMBER:
+	# TODO: this shouldn't be done:
+	if option.shop_name == "Team Member(s)":
 		purchase_successful = try_buy_option(option, 2)
 	else:
 		purchase_successful = try_buy_option(option)
@@ -76,8 +77,8 @@ func try_buy():
 	# This function is just a test function
 	# Debug: also sets costs to zero
 	if debug_buy_all:
-		for buy_option in BuyOptions:
-			try_buy_option(BuyOptions[buy_option])
+		for option in options:
+			try_buy_option(option)
 		return
 	
 	var purchase_successful = false
