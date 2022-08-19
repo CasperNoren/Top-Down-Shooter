@@ -7,6 +7,7 @@ signal bought_team_members(amount)
 signal bought_turret(turret)
 signal money_changed(value)
 
+# TODO: Remove these, first check so they aren't used anymore
 enum BuyOptions {
 	SUBMACHINEGUN,
 	SHOTGUN,
@@ -58,13 +59,13 @@ func _on_Timer_timeout():
 
 func _unhandled_input(event):
 	# Both sides share this scene but controls should only work for the player side
-	# TODO: Remove, testing
+	# TODO: Remove, testing. "buy" action now opens the buy menu 
 	return
 	if team.team == Team.TeamName.PLAYER and event.is_action_released("buy"):
 		try_buy()
 
 func handle_buy_button_pressed(option: BuyableOption):
-	#print(BuyOptions.keys()[option], " buy button reached money manager")
+	#print(option.shop_name, " buy button reached money manager")
 	var purchase_successful = false
 	# TODO: this shouldn't be done:
 	if option.shop_name == "Team Member(s)":
@@ -130,7 +131,7 @@ func try_buy_option(option: BuyableOption, amount: int = -1) -> bool:
 			emit_signal(signal_to_emit, amount)
 		elif packed_scene != null and amount != -1:
 			# TODO: Currently not used for any option, no signal exists currrently
-			print("Error: MoneyManager tried to buy packed scene with amount (does not exist)")
+			printerr("Error: MoneyManager tried to buy packed scene with amount (does not exist)")
 			emit_signal(signal_to_emit, packed_scene, amount)
 		elif packed_scene != null:
 			emit_signal(signal_to_emit, packed_scene)
@@ -155,6 +156,8 @@ func print_bought_option(option: BuyableOption, amount: int, purchase_successful
 
 func set_money(new_value: int):
 	money = new_value
+	if money < 0:
+		money = 0
 	# Player doesn't need AI
 	if team.team != Team.TeamName.PLAYER:
 		buying_ai.set_money(money)

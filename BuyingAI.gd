@@ -9,6 +9,7 @@ signal buying_ai_choose_option(option)
 # 	if only the home base is left -> prioritize turrets
 # 	else -> buy weapons
 # Maybe priority should be an int that can be changed depending on factors?
+# Maybe BuyableOption should have an export enum with type like: upgrade, defense, team
 
 var available_options: Array = []
 var money: int = 0
@@ -17,7 +18,6 @@ func choose_next_purchase():
 	if money <= 0:
 		return
 
-# TODO: Make moneymanager call this when removed_options has been updated
 # Returns all options that aren't removed
 func set_available_options(all_options: Array, removed_options: Array) -> Array:
 	available_options = []
