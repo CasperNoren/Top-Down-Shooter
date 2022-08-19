@@ -16,6 +16,7 @@ enum BuyOptions {
 }
 
 onready var team = $Team 
+onready var buyable_options_container = $BuyableOptionsContainer
 onready var submachinegun = preload("res://weapons/SubmachineGun.tscn")
 onready var shotgun = preload("res://weapons/Shotgun.tscn")
 onready var turret = preload("res://actors/Turret.tscn")
@@ -27,11 +28,16 @@ var money: int = 0;
 var number_of_team_bases: int = 1
 # TODO: Remove, this is a test variable to use before a menu can be used to choose what to buy
 var times_bought: int = 0
+var options: Array = []
 var removed_options: Array = []
 var options_to_not_remove: Array = [BuyOptions.TEAMMEMBER]
 
 func initialize(team_name: int):
 	team.team = team_name
+	for buyable_option in buyable_options_container.get_children():
+		options.append(buyable_option)
+		if buyable_option.should_not_be_removed:
+			options_to_not_remove.append(buyable_option)
 
 func handle_bases_changed(bases):
 	number_of_team_bases = 1
@@ -93,7 +99,6 @@ func try_buy_option(option: int, amount: int = -1) -> bool:
 	# amount: int -1 functions as null here
 	var cost: int = 20
 	var signal_to_emit: String = ""
-	# TODO: Don't like using a non-typed variable
 	var packed_scene: PackedScene = null
 	
 	match option:
@@ -114,7 +119,7 @@ func try_buy_option(option: int, amount: int = -1) -> bool:
 				signal_to_emit = "bought_turret"
 				packed_scene = turret
 			BuyOptions.TEAMMEMBER:
-				# Should always show the amount, null will count as 1
+				# Should always show the amount, null (-1) will count as 1
 				if amount == -1:
 					amount = 1
 				cost = 1 * amount

@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name BuyableOption
+
 export (PackedScene) var item_scene = null
 export (String) var signal_to_emit = ""
 export (String) var shop_name = ""
