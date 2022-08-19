@@ -37,6 +37,8 @@ func _ready() -> void:
 	capturable_base_manager.connect("player_lost_all_bases", self, "handle_player_lost")
 	capturable_base_manager.connect("bases_changed", self, "handle_bases_changed")
 	
+	gui.set_money_manager(ally_ai.money_manager)
+	
 	spawn_player()
 
 func spawn_player():

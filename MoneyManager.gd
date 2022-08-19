@@ -5,6 +5,7 @@ class_name MoneyManager
 signal bought_weapon(weapon)
 signal bought_team_members(amount)
 signal bought_turret(turret)
+signal money_changed(value)
 
 enum BuyOptions {
 	SUBMACHINEGUN,
@@ -49,6 +50,9 @@ func _on_Timer_timeout():
 	money += number_of_team_bases
 	# TODO: Add money to GUI
 	print(str(team.team) + " money: " + str(money) + "| Number of bases: " + str(number_of_team_bases))
+	# It's for the GUI
+	if team.team == Team.TeamName.PLAYER:
+		emit_signal("money_changed", money)
 
 func _unhandled_input(event):
 	# Both sides share this scene but controls should only work for the player side
@@ -114,6 +118,8 @@ func try_buy_option(option: BuyableOption, amount: int = -1) -> bool:
 		
 	if money >= cost:
 		money -= cost
+		if team.team == Team.TeamName.PLAYER:
+			emit_signal("money_changed", money)
 		
 		if packed_scene == null:
 			# Should always show the amount, null (-1) will count as 1

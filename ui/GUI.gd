@@ -7,8 +7,10 @@ onready var health_tween = $MarginContainer/Rows/BottomRow/HealthSection/HealthT
 onready var current_ammo = $MarginContainer/Rows/BottomRow/AmmoSection/CurrentAmmo
 onready var max_ammo = $MarginContainer/Rows/BottomRow/AmmoSection/MaxAmmo
 onready var base_label = $MarginContainer/Rows/TopRow/BaseLabel
+onready var money_label = $MarginContainer/Rows/TopRow/MoneyLabel
 
 var player: Player
+var money_manager: MoneyManager
 
 func set_player(player: Player):
 	self.player = player
@@ -25,6 +27,10 @@ func set_weapon(weapon: Weapon):
 	if not weapon.is_connected("weapon_ammo_changed", self, "set_current_ammo"):
 		weapon.connect("weapon_ammo_changed", self, "set_current_ammo")
 
+func set_money_manager(money_manager: MoneyManager):
+	self.money_manager = money_label
+	money_manager.connect("money_changed", self, "set_money_label")
+
 func set_new_health_value(new_health: int):
 	var transition_time: float = 0.4
 	var original_color = Color("#961515")
@@ -37,7 +43,7 @@ func set_new_health_value(new_health: int):
 
 # Dynamically shows bases' team status, can have as many bases as fits on screen
 func set_bases(bases: Array):
-	var new_text: String = ""
+	var new_text: String = "[center]"
 	for base in bases:
 		match base.team.team:
 			Team.TeamName.PLAYER:
@@ -48,6 +54,9 @@ func set_bases(bases: Array):
 				new_text += "[color=white]"
 		new_text += "o [/color]"
 		base_label.bbcode_text = new_text
+
+func set_money_label(new_value: int):
+	money_label.bbcode_text = "[color=yellow]" + str(new_value) + "[/color]"
 
 func set_current_ammo(new_ammo: int):
 	current_ammo.text = str(new_ammo)
