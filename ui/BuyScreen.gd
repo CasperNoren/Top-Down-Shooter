@@ -12,12 +12,13 @@ var options_to_not_remove: Array = []
 
 func _ready():
 	get_tree().paused = true
-	
+
+func add_options(options_to_add: Array):
 	# TODO: Make it so options start a new row if there are too many
-	for buy_option in MoneyManager.BuyOptions:
+	for buy_option in options_to_add:
 		var option = button_buy_option.instance()
 		option_columns.add_child(option)
-		option.initialize(MoneyManager.BuyOptions[buy_option])
+		option.initialize(buy_option)
 		options.append(option)
 
 func _on_ContinueButton_pressed():
