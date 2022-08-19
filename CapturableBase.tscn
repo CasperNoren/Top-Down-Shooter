@@ -24,7 +24,7 @@ shape = SubResource( 1 )
 [node name="Team" parent="." instance=ExtResource( 2 )]
 
 [node name="CaptureTimer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 15.0
 one_shot = true
 
 [node name="PlayerLabel" type="Label" parent="."]

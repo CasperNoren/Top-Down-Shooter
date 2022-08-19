@@ -6,6 +6,7 @@ signal base_captured(new_team)
 export (Color) var neutral_color = Color(1, 1, 1)
 export (Color) var player_color = Color(0.235294, 0.431373, 0.129412)
 export (Color) var enemy_color = Color(0.156863, 0.364706, 0.603922)
+export (bool) var debug_show_capture_prints = false
 
 onready var collision_shape = $CollisionShape2D
 onready var team = $Team
@@ -61,14 +62,17 @@ func change_enemy_label():
 	enemy_label.text = str(enemy_unit_count)
 
 func check_wheter_base_can_be_captured():
-	#print(player_unit_count, " | ", enemy_unit_count)
+	if debug_show_capture_prints:
+		print(player_unit_count, " | ", enemy_unit_count)
 	var majority_team = get_team_with_majority()
 	if majority_team == Team.TeamName.NEUTRAL:
-		#print("Teams evened out, stopping capture clock. Current owner:", team.team)
+		if debug_show_capture_prints:
+			print("Teams evened out, stopping capture clock. Current owner:", team.team)
 		team_to_capture = Team.TeamName.NEUTRAL
 		capture_timer.stop()
 	if majority_team == team.team:
-		#print("Owning team regained majority, stopping clock: ", team.team)
+		if debug_show_capture_prints:
+			print("Owning team regained majority, stopping clock: ", team.team)
 		team_to_capture = team.TeamName.NEUTRAL
 		capture_timer.stop()
 	else:
@@ -76,9 +80,11 @@ func check_wheter_base_can_be_captured():
 		# ... and if the timer isn't stopped
 		if majority_team == team_to_capture and capture_timer.time_left > 0:
 			# If it's the same team as last time we don't want the timer to start over
-			print("Team to capture number changed. Doing nothing to the clock")
+			if debug_show_capture_prints:
+				print("Team to capture number changed. Doing nothing to the clock")
 			return
-		print("New team has majority, starting clock. New team: ", majority_team)
+		if debug_show_capture_prints:
+			print("New team has majority, starting clock. New team: ", majority_team)
 		team_to_capture = majority_team
 		capture_timer.start()
 
