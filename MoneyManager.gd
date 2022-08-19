@@ -95,38 +95,11 @@ func try_buy():
 	if purchase_successful:
 		times_bought += 1
 
-func try_buy_option(option: int, amount: int = -1) -> bool:
+func try_buy_option(option: BuyableOption, amount: int = -1) -> bool:
 	# amount: int -1 functions as null here
-	var cost: int = 20
-	var signal_to_emit: String = ""
-	var packed_scene: PackedScene = null
-	
-	match option:
-			BuyOptions.SUBMACHINEGUN:
-				cost = 1
-				signal_to_emit = "bought_weapon"
-				packed_scene = submachinegun
-			BuyOptions.SHOTGUN:
-				cost = 2
-				signal_to_emit = "bought_weapon"
-				packed_scene = shotgun
-			BuyOptions.TURRET1:
-				cost = 3
-				signal_to_emit = "bought_turret"
-				packed_scene = turret
-			BuyOptions.TURRET2:
-				cost = 3
-				signal_to_emit = "bought_turret"
-				packed_scene = turret
-			BuyOptions.TEAMMEMBER:
-				# Should always show the amount, null (-1) will count as 1
-				if amount == -1:
-					amount = 1
-				cost = 1 * amount
-				signal_to_emit = "bought_team_members"
-			_:
-				print("Invalid buy option")
-				return false
+	var cost: int = option.cost
+	var signal_to_emit: String = option.signal_to_emit
+	var packed_scene: PackedScene = option.item_scene
 	
 	# debug_buy_all needs the cost to be zero to purchase everything sucessfully
 	if debug_zero_cost or debug_buy_all:
@@ -135,13 +108,17 @@ func try_buy_option(option: int, amount: int = -1) -> bool:
 	if money >= cost:
 		money -= cost
 		
-		if packed_scene != null and amount != -1:
+		if packed_scene == null:
+			# Should always show the amount, null (-1) will count as 1
+			if amount == -1:
+				amount = 1
+			emit_signal(signal_to_emit, amount)
+		elif packed_scene != null and amount != -1:
 			# TODO: Currently not used for any option, no signal exists currrently
+			print("Error: MoneyManager tried to buy packed scene with amount (does not exist)")
 			emit_signal(signal_to_emit, packed_scene, amount)
 		elif packed_scene != null:
 			emit_signal(signal_to_emit, packed_scene)
-		elif amount != -1:
-			emit_signal(signal_to_emit, amount)
 		else:
 			printerr("Invalid buy option reached signal emitting stage")
 			return false
