@@ -23,10 +23,7 @@ func choose_next_purchase():
 	choosen_option = available_options[randi() % available_options.size()]
 	
 	print("BuyingAI choose: ", choosen_option.shop_name)
-	#
-	# Doesn't seem to recieve signal
-	#
-	emit_signal("buying_ai_choose_option choosen", choosen_option)
+	emit_signal("buying_ai_choose_option", choosen_option)
 
 # Returns all options that aren't removed
 func set_available_options(all_options: Array, removed_options: Array) -> Array:
