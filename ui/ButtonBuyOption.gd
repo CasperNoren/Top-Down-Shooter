@@ -4,7 +4,8 @@ var option: BuyableOption = null
 
 func initialize(option: BuyableOption):
 	self.option = option
-	text = option.shop_name
+	var button_text = option.shop_name + " " + str(option.cost) + "g"
+	text = button_text
 
 func _pressed():
 	print(option.shop_name, " buy button pressed")
