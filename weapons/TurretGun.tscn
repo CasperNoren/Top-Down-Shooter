@@ -18,7 +18,7 @@ texture = SubResource( 1 )
 position = Vector2( -1.90735e-06, 38 )
 
 [node name="AttackCooldown" parent="." index="2"]
-wait_time = 1.5
+wait_time = 4.0
 
 [node name="MuzzleFlash" parent="." index="3"]
 visible = true
