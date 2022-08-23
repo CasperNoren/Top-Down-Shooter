@@ -32,6 +32,22 @@ func choose_next_purchase():
 		choosen_option = available_options[randi() % available_options.size()]
 	else:
 		update_information()
+		#
+		# Add code to choose type
+		#
+		var choosen_type: int = BuyableOption.OptionType.WEAPON
+		var available_options_with_choosen_type: Array = []
+		
+		#
+		# TODO: Known bug available_options never gets updated after the first time
+		#
+		
+		# Get all options with the choosen type
+		for option in available_options:
+			if option.option_type == choosen_type:
+				available_options_with_choosen_type.append(option)
+		# Picks random from the ones with the type instead of choosing any available_option randomly
+		choosen_option = available_options[randi() % available_options_with_choosen_type.size()]
 	
 	if choosen_option == null:
 		print("BuyingAI didn't choose an option")
@@ -45,8 +61,8 @@ func update_information():
 	#print("BuyingAI bases: ", information_source.capturable_bases)
 	amount_of_bases_owned = number_of_bases_owned_by_team(information_source.capturable_bases, information_source.team_name)
 	amount_of_bases_opponents_own = number_of_bases_owned_by_opponent(information_source.capturable_bases, information_source.team_name)
-	print("BuyingAI team owned bases: ", amount_of_bases_owned)
-	print("BuyingAI opponent owned bases: ", amount_of_bases_opponents_own)
+	#print("BuyingAI team owned bases: ", amount_of_bases_owned)
+	#print("BuyingAI opponent owned bases: ", amount_of_bases_opponents_own)
 
 func number_of_bases_owned_by_team(bases: Array, team: int) -> int:
 	var amount_of_bases: int = 0
