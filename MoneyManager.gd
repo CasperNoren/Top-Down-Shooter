@@ -42,7 +42,7 @@ func initialize(team_name: int):
 		if buyable_option.should_not_be_removed:
 			options_to_not_remove.append(buyable_option)
 	
-	buying_ai.connect("buying_ai_choose_option", self, "try_buy_option")
+	buying_ai.connect("buying_ai_choose_option", self, "handle_ai_choose_option")
 	if team.team != Team.TeamName.PLAYER:
 		# First call since no options should have been removed yet
 		buying_ai.set_available_options(options, removed_options)
@@ -153,6 +153,12 @@ func try_buy_option(option: BuyableOption, amount: int = -1) -> bool:
 	else:
 		print_bought_option(option, amount, false)
 		return false
+
+func handle_ai_choose_option(option: BuyableOption):
+	# Try buy returns true/false for success
+	if try_buy_option(option):
+		if options_to_not_remove.find(option) == -1:
+			add_removed_option(option)
 
 func print_bought_option(option: BuyableOption, amount: int, purchase_successful: bool = true):
 	# -1 counts as null here
