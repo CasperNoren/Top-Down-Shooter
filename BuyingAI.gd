@@ -13,15 +13,18 @@ signal buying_ai_choose_option(option)
 
 var available_options: Array = []
 var money: int = 0
+export (bool) var choose_random = false
 
 func choose_next_purchase():
 	print("BuyingAI: ", money)
 	if money <= 0 or available_options.size() <= 0:
 		return
 	var choosen_option: BuyableOption = null
-	# choose completely random option
-	choosen_option = available_options[randi() % available_options.size()]
 	
+	if choose_random:
+		choosen_option = available_options[randi() % available_options.size()]
+	else:
+		pass
 	print("BuyingAI choose: ", choosen_option.shop_name)
 	emit_signal("buying_ai_choose_option", choosen_option)
 
