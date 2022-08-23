@@ -45,6 +45,11 @@ _global_script_classes=[ {
 "path": "res://ui/GUI.gd"
 }, {
 "base": "Node2D",
+"class": "MapAI",
+"language": "GDScript",
+"path": "res://MapAI.gd"
+}, {
+"base": "Node2D",
 "class": "MoneyManager",
 "language": "GDScript",
 "path": "res://MoneyManager.gd"
@@ -87,6 +92,7 @@ _global_script_class_icons={
 "BuyingAI": "",
 "CapturableBase": "",
 "GUI": "",
+"MapAI": "",
 "MoneyManager": "",
 "PathFinding": "",
 "Player": "",

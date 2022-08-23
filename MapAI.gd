@@ -1,5 +1,6 @@
 extends Node2D
 
+class_name MapAI
 
 enum BaseCaptureStartOrder {
 	FIRST,
