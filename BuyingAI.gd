@@ -35,12 +35,20 @@ func choose_next_purchase():
 		#
 		# Add code to choose type
 		#
+		# All options of a certain type can run out and in that case the option shouldn't be choosable
+		var chooseable_types: Array = []
+		for option_type in BuyableOption.OptionType.size():
+			for option in available_options:
+				if option_type == option.option_type:
+					chooseable_types.append(option_type)
+					break
+		var debug_print_chooseable_types = "Chooseable Types: "
+		for type in chooseable_types:
+			debug_print_chooseable_types += str(BuyableOption.OptionType.keys()[type]) + " "
+		print(debug_print_chooseable_types)
+		
 		var choosen_type: int = BuyableOption.OptionType.WEAPON
 		var available_options_with_choosen_type: Array = []
-		
-		#
-		# TODO: Known bug available_options never gets updated after the first time
-		#
 		
 		# Get all options with the choosen type
 		for option in available_options:
