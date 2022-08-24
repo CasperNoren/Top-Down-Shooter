@@ -19,9 +19,11 @@ var available_options: Array = []
 var money: int = 0
 
 # Information:
-var amount_of_bases_owned = 0
-var amount_of_bases_opponents_own = 0
-var total_bases = 0
+var amount_of_bases_owned: int = 0
+var amount_of_bases_opponents_own: int = 0
+var total_bases: int = 0
+var team_max_units_alive: int = 0
+var amount_of_turrets: int = 0
 
 func choose_next_purchase():
 	print("BuyingAI: ", money)
@@ -33,9 +35,6 @@ func choose_next_purchase():
 		choosen_option = available_options[randi() % available_options.size()]
 	else:
 		update_information()
-		#
-		# Add code to choose type
-		#
 		# All options of a certain type can run out and in that case the option shouldn't be choosable
 		var chooseable_types: Array = []
 		for option_type in BuyableOption.OptionType.size():
@@ -52,7 +51,20 @@ func choose_next_purchase():
 		var choosen_type: int = BuyableOption.OptionType.WEAPON
 		var available_options_with_choosen_type: Array = []
 		
-		if chooseable_types.find(BuyableOption.OptionType.WEAPON) != -1:
+		# Chooses what buy option is best
+		if amount_of_bases_opponents_own >= total_bases - 1 and chooseable_types.find(BuyableOption.OptionType.DEFENSE) != -1:
+			# Team only has one (or less) bases left, should really buy turrets to defend 
+			choosen_type = BuyableOption.OptionType.DEFENSE
+		elif team_max_units_alive < 10 and chooseable_types.find(BuyableOption.OptionType.TEAM) != -1:
+			choosen_type = BuyableOption.OptionType.TEAM
+		elif amount_of_turrets < 1 and chooseable_types.find(BuyableOption.OptionType.DEFENSE) != -1:
+			choosen_type = BuyableOption.OptionType.DEFENSE
+		elif team_max_units_alive < 15 and chooseable_types.find(BuyableOption.OptionType.TEAM) != -1:
+			choosen_type = BuyableOption.OptionType.TEAM
+		elif amount_of_turrets < 2 and team_max_units_alive >= 15 and chooseable_types.find(BuyableOption.OptionType.DEFENSE) != -1:
+			# Needs to have the team check so it gets the chance to buy guns
+			choosen_type = BuyableOption.OptionType.DEFENSE
+		elif chooseable_types.find(BuyableOption.OptionType.WEAPON) != -1:
 			choosen_type = BuyableOption.OptionType.WEAPON
 		else:
 			# Team can never run out so it is the default
@@ -82,6 +94,8 @@ func update_information():
 	amount_of_bases_owned = number_of_bases_owned_by_team(information_source.capturable_bases, information_source.team_name)
 	amount_of_bases_opponents_own = number_of_bases_owned_by_opponent(information_source.capturable_bases, information_source.team_name)
 	total_bases = information_source.capturable_bases.size()
+	team_max_units_alive = information_source.max_units_alive
+	amount_of_turrets = information_source.get_amount_of_turrets()
 	#print("BuyingAI team owned bases: ", amount_of_bases_owned)
 	#print("BuyingAI opponent owned bases: ", amount_of_bases_opponents_own)
 

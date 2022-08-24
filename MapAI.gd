@@ -161,3 +161,10 @@ func add_turret(turret: PackedScene):
 			return
 	# All team turret spots occupied
 	print("No turret spot available")
+
+func get_amount_of_turrets() -> int:
+	var amount_of_turrets: int = 0
+	for turret_spot in turret_spots:
+		if turret_spot.get_children().size() > 0:
+			amount_of_turrets += 1
+	return amount_of_turrets
