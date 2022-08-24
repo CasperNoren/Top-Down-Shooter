@@ -21,6 +21,7 @@ var money: int = 0
 # Information:
 var amount_of_bases_owned = 0
 var amount_of_bases_opponents_own = 0
+var total_bases = 0
 
 func choose_next_purchase():
 	print("BuyingAI: ", money)
@@ -42,6 +43,7 @@ func choose_next_purchase():
 				if option_type == option.option_type:
 					chooseable_types.append(option_type)
 					break
+		# For debugging:
 		var debug_print_chooseable_types = "Chooseable Types: "
 		for type in chooseable_types:
 			debug_print_chooseable_types += str(BuyableOption.OptionType.keys()[type]) + " "
@@ -49,6 +51,12 @@ func choose_next_purchase():
 		
 		var choosen_type: int = BuyableOption.OptionType.WEAPON
 		var available_options_with_choosen_type: Array = []
+		
+		if chooseable_types.find(BuyableOption.OptionType.WEAPON) != -1:
+			choosen_type = BuyableOption.OptionType.WEAPON
+		else:
+			# Team can never run out so it is the default
+			choosen_type = BuyableOption.OptionType.TEAM
 		
 		# Get all options with the choosen type
 		for option in available_options:
@@ -73,6 +81,7 @@ func update_information():
 	#print("BuyingAI bases: ", information_source.capturable_bases)
 	amount_of_bases_owned = number_of_bases_owned_by_team(information_source.capturable_bases, information_source.team_name)
 	amount_of_bases_opponents_own = number_of_bases_owned_by_opponent(information_source.capturable_bases, information_source.team_name)
+	total_bases = information_source.capturable_bases.size()
 	#print("BuyingAI team owned bases: ", amount_of_bases_owned)
 	#print("BuyingAI opponent owned bases: ", amount_of_bases_opponents_own)
 
