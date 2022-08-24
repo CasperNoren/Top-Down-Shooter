@@ -22,32 +22,32 @@ autostart = true
 item_scene = ExtResource( 6 )
 signal_to_emit = "bought_weapon"
 shop_name = "Submachine Gun"
-cost = 1
+cost = 10
 
 [node name="OptionShotgun" parent="BuyableOptionsContainer" instance=ExtResource( 3 )]
 item_scene = ExtResource( 5 )
 signal_to_emit = "bought_weapon"
 shop_name = "Shotgun"
-cost = 2
+cost = 20
 
 [node name="OptionTurret1" parent="BuyableOptionsContainer" instance=ExtResource( 3 )]
 item_scene = ExtResource( 4 )
 signal_to_emit = "bought_turret"
 shop_name = "Turret-1"
-cost = 3
+cost = 30
 option_type = 1
 
 [node name="OptionTurret2" parent="BuyableOptionsContainer" instance=ExtResource( 3 )]
 item_scene = ExtResource( 4 )
 signal_to_emit = "bought_turret"
 shop_name = "Turret-2"
-cost = 3
+cost = 30
 option_type = 1
 
 [node name="OptionTeamMember" parent="BuyableOptionsContainer" instance=ExtResource( 3 )]
 signal_to_emit = "bought_team_members"
 shop_name = "Team Member"
-cost = 1
+cost = 10
 should_not_be_removed = true
 option_type = 0
 

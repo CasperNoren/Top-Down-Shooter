@@ -79,7 +79,8 @@ func choose_next_purchase():
 		# Should probably be checked beforehand to see that there are available options of the choosen type
 		if available_options_with_choosen_type.size() > 0:
 			# Picks random from the ones with the type instead of choosing any available_option randomly
-			choosen_option = available_options[randi() % available_options_with_choosen_type.size()]
+			choosen_option = available_options_with_choosen_type[randi() % available_options_with_choosen_type.size()]
+			#print("choosen: ", choosen_option)
 	
 	if choosen_option == null:
 		print("BuyingAI didn't choose an option")
