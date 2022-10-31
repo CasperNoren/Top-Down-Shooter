@@ -39,5 +39,5 @@ If I ever come back to this project
 </br>
 
 ## 😐 Misc:
-I also the first one to find and fix a pretty no one had ever noticed. When trying to capture a base the countdown to capturing would reset when new actors would enter the capture zone even if there was no change in who was winning the capture. It was a fairly easy fix but I still felt somewhat proud of being the first person to find it and fixing it myself.
+I also was also the first one to find and fix a pretty big bug no one had ever noticed. When trying to capture a base the countdown to capturing would reset when new actors would enter the capture zone even if there was no change in who was winning the capture. It was a fairly easy fix but I still felt somewhat proud of being the first person to find it and fixing it myself.
 </br>
