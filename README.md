@@ -1,5 +1,5 @@
 # 🔫 Top-Down-Shooter
-Game made in Godot inspired [jmbiv's Godot top-down-shooter tutorial](https://www.youtube.com/playlist?list=PLpwc3ughKbZexDyPexHN2MXLliKAovkpl).
+Game made in Godot inspired by [jmbiv's Godot top-down-shooter tutorial](https://www.youtube.com/playlist?list=PLpwc3ughKbZexDyPexHN2MXLliKAovkpl).
 
 <img src="readme-full screen.png">
 
